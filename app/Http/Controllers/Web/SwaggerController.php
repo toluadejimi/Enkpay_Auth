@@ -32,6 +32,81 @@ use App\Http\Controllers\Controller;
  * )
  */
 
+/**
+ * @OA\Post(
+ *     path="/auth/register",
+ *     summary="Register User",
+ *     tags={"Authentication API"},
+ *    @OA\Parameter(
+ *           name="last_name",
+ *           in="query",
+ *           required=true,
+ *           @OA\Schema(
+ *                 type="string"
+ *           )
+ *     ),
+ *    @OA\Parameter(
+ *           name="first_name",
+ *           in="query",
+ *           required=true,
+ *           @OA\Schema(
+ *                 type="string"
+ *           )
+ *     ),
+ *    @OA\Parameter(
+ *           name="phone_country",
+ *           in="query",
+ *           required=true,
+ *           @OA\Schema(
+ *                 type="string"
+ *           )
+ *     ),
+ *    @OA\Parameter(
+ *           name="phone",
+ *           in="query",
+ *           required=true,
+ *           @OA\Schema(
+ *                 type="string"
+ *           )
+ *     ),
+ *    @OA\Parameter(
+ *           name="password",
+ *           in="query",
+ *           required=true,
+ *           @OA\Schema(
+ *                 type="string"
+ *           )
+ *     ),
+ *    @OA\Parameter(
+ *           name="password_confirmation",
+ *           in="query",
+ *           required=true,
+ *           @OA\Schema(
+ *                 type="string"
+ *           )
+ *     ),
+ *    @OA\Response(
+ *      response=200,
+ *       description="Success",
+ *   ),
+ *   @OA\Response(
+ *      response=400,
+ *      description="Bad Request"
+ *   ),
+ *   @OA\Response(
+ *      response=404,
+ *      description="not found"
+ *   ),
+ *    @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *    ),
+ *      security={
+ *         {"Authorization":{}}
+ *     },
+ * )
+ */
+
 class SwaggerController extends Controller
 {
     //
