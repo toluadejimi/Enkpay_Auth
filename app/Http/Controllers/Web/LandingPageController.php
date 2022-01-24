@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 
 class LandingPageController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): string
     {
-        return "";
+        return "Hello, I don't expect you to be here, please use the api.";
     }
 }
