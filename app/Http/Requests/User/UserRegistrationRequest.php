@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\AccountTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class UserRegistrationRequest extends FormRequest
 {
@@ -18,9 +20,11 @@ class UserRegistrationRequest extends FormRequest
         return [
             'last_name' => ['required', 'string', 'max:255'],
             'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['sometimes', 'string', 'max:255'],
             'phone' => ['required', 'string', 'phone'],
+            'account_type' => ['required', 'string', 'enum:'.AccountTypeEnum::class],
             'phone_country' => ['required_with:phone'],
-            'password' => ['required', 'string', 'confirmed']
+            'password' => ['required', 'string', 'confirmed', Password::default()]
         ];
     }
 }

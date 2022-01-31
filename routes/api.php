@@ -1,29 +1,45 @@
 <?php
 /** API Routes */
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Account\CreatePinController;
+use App\Http\Controllers\Api\Auth\PasswordResetController;
+use App\Http\Controllers\Api\Auth\AuthenticationController;
+use App\Http\Controllers\Api\Account\ChangePasswordController;
 
-/** Registration user (phone, password) */
-/** Verify token sent (token) */
-// By text token or By voice token (text is default)
+/** Authentication routes */
+Route::prefix('auth')->group(function () {
+    /** Login route */
+    Route::post('/login', [AuthenticationController::class, 'login']);
 
-/** Authentication (login, logout) */
+    /** Register routes */
+    Route::prefix('/register')->group(function () {
+            Route::post('/', [RegisterController::class, 'register'])->name('auth.register');
+            Route::post('/verify', [RegisterController::class, 'verify'])->name('auth.verify');
+        });
 
-/** Forgot request password (phone) */
-/** Verify reset password token sent (token) */
-/** Reset password (password)*/
+    Route::prefix('/password')->group(function () {
+        /** Forgot password route */
+        Route::post('/forgot-password', PasswordResetController::class)->name('password.phone');
 
-/** Register routes */
-Route::controller(RegisterController::class)
-    ->prefix('auth/register')
-    ->as('auth.')
-    ->group(function () {
-       Route::post('/', 'register')->name('register');
+        /** Reset password route */
+        Route::post('/reset-password', NewPasswordController::class)->name('password.update');
     });
 
+    /** Authenticated routes */
+    Route::middleware('auth:sanctum')->prefix('account')->group(function () {
+        /** Updates routes */
+        Route::prefix('/update')->group(function () {
+            /** Change password route */
+            Route::post('/change-password', ChangePasswordController::class)->name('account.update.change-password');
+        });
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+        /** Create pin route */
+        Route::post('/create-pin', CreatePinController::class)->name('account.create-pin');
+
+        /** Logout route */
+        Route::post('/logout', [AuthenticationController::class, 'logout'])->name('account.logout');
+    });
 });

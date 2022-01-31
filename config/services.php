@@ -32,15 +32,15 @@ return [
 
     'sms' => [
         'base_url' => env('SMS_BASE_URL', 'https://api.ng.termii.com'),
-        'api_key' => env('SMS_API_KEY', ''),
+        'api_key' => env('SMS_API_KEY'),
         'type' => env('SMS_TYPE', 'plain'),
         'channel' => env('SMS_CHANNEL', 'dnd'),
     ],
 
     'vulte' => [
         'base_url' => env('VULTE_BASE_URL', 'https://api.openbanking.vulte.ng'),
-        'api_key' => env('VULTE_API_KEY', ''),
-        'secret' => env('VULTE_SECRET', ''),
+        'api_key' => env('VULTE_API_KEY'),
+        'secret' => env('VULTE_SECRET'),
     ]
 
 ];
