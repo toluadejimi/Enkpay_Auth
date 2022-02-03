@@ -24,10 +24,9 @@ class AuthenticationController extends BaseApiController
         ]);
 
         if ($state) {
-            $authUser = Auth::user();
+            $success['user'] = $user = new UserResource(Auth::user());
             $success['token_type'] = 'Bearer';
-            $success['token'] =  $authUser->createToken('ENKPAY_AUTH')->plainTextToken;
-            $success['fullname'] =  $authUser->full_name;
+            $success['token'] =  $user->createToken('ENKPAY_AUTH')->plainTextToken;
 
             return $this->sendResponse($success, 'User signed in');
         }
