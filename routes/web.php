@@ -5,3 +5,4 @@ use App\Http\Controllers\Web\LandingPageController;
 
 /** Landing page route */
 Route::get('/', LandingPageController::class);
+

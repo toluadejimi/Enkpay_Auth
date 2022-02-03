@@ -2,15 +2,43 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-class AuthenticationController
-{
-    public function login()
-    {
+use App\States\User\Active;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
+use Propaganistas\LaravelPhone\PhoneNumber;
+use App\Http\Controllers\Api\BaseApiController;
 
+class AuthenticationController extends BaseApiController
+{
+    public function login(Request $request): JsonResponse
+    {
+        $state = Auth::attempt([
+            'phone' => PhoneNumber::make($request->phone, 'NG')->formatInternational(),
+            'password' => $request->password,
+            function ($builder) {
+                $builder->whereState('status', Active::class);
+            }
+        ]);
+
+        if ($state) {
+            $authUser = Auth::user();
+            $success['token_type'] = 'Bearer';
+            $success['token'] =  $authUser->createToken('ENKPAY_AUTH')->plainTextToken;
+            $success['fullname'] =  $authUser->full_name;
+
+            return $this->sendResponse($success, 'User signed in');
+        }
+
+        return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
     }
 
-    public function logout()
+    public function logout(Request $request): Response
     {
+        $request->user()->currentAccessToken()->delete();
 
+        return response()->noContent();
     }
 }

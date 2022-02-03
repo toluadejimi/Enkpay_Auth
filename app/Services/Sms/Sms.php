@@ -3,6 +3,7 @@
 namespace App\Services\Sms;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\RequestException;
 
 class Sms
 {
@@ -19,6 +20,9 @@ class Sms
         $this->base_url = config('services.sms.base_url');
     }
 
+    /**
+     * @throws RequestException
+     */
     public function send(array $attributes)
     {
         return Http::get($this->base_url, [
@@ -28,7 +32,7 @@ class Sms
             'type' => $this->type,
             'channel' => $this->channel,
             'api_key' => $this->api_key,
-        ])->json();
+        ])->throw()->json();
 
         // Log response details (filter number out)
     }

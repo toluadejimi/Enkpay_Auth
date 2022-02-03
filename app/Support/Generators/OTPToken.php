@@ -48,9 +48,9 @@ class OTPToken
 
     private static function hasUniqueToken(string $token): bool
     {
-        return (count(DB::table(self::$table)
+        return (DB::table(self::$table)
                 ->where('token', $token)
-                ->get()) > 0);
+                ->count() > 0);
     }
 
     public function __toString(): string

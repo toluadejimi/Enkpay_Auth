@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\MustVerifyPhone;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
 use App\States\User\UserStatus;
+use App\Traits\MustVerifyPhone;
 use Spatie\ModelStates\HasStates;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +16,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\VerificationNotification;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    use HasRoles;
     use HasStates;
     use Notifiable;
     use HasFactory;
@@ -50,12 +53,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function boot()
+    protected static function boot()
     {
         parent::boot();
 
-        self::creating(function ($model) {
-            $model->uuid = Str::orderedUuid();
+        static::creating(function (User $user) {
+            $user->uuid = Str::orderedUuid();
         });
     }
 
@@ -64,6 +67,13 @@ class User extends Authenticatable
         return new Attribute(
             get: fn () => PhoneNumber:: make($this->phone, $this->phone_country)
                 ->formatInternational()
+        );
+    }
+
+    public function full_name(): Attribute
+    {
+        return new Attribute(
+            get: fn () => "{$this->last_name} {$this->first_name} {$this->middle_name}"
         );
     }
 
@@ -95,6 +105,11 @@ class User extends Authenticatable
     {
         return DB::table('phone_verification_tokens')
             ->where('phone', $this->phone_number)
-            ->first()->token;
+            ->value('token');
+    }
+
+    public function virtual_account(): HasOne
+    {
+        return $this->hasOne(VirtualAccount::class, 'user_id');
     }
 }
