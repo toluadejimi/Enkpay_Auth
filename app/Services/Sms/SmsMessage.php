@@ -39,9 +39,9 @@ class SmsMessage
     }
 
     /** @throws Exception */
-    public function send(): array
+    public function send()
     {
-        return $this->client->send([
+        $this->client->send([
             'to'        => $this->to,
             'from'      => $this->from,
             'message'   => join("\n", $this->lines)

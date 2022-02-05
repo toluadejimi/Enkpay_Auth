@@ -42,6 +42,7 @@ return [
         'base_url' => env('VULTE_BASE_URL', 'https://api.openbanking.vulte.ng'),
         'api_key' => env('VULTE_API_KEY'),
         'secret' => env('VULTE_SECRET'),
+        'webhook' => env('VULTE_WEBHOOK'),
     ]
 
 ];

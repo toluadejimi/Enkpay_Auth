@@ -20,11 +20,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasRoles;
     use HasStates;
     use Notifiable;
     use HasFactory;
@@ -66,7 +64,7 @@ class User extends Authenticatable
     public function getPhoneNumberAttribute(): string
     {
         return (string) PhoneNumber:: make($this->phone, $this->phone_country)
-                ->formatInternational();
+                ->formatE164();
     }
 
     public function getFullNameAttribute(): string

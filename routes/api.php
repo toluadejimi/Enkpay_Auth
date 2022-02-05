@@ -44,6 +44,9 @@ Route::prefix('auth')->group(function () {
             Route::prefix('/update')->group(function () {
                 /** Change password route */
                 Route::post('/change-password', ChangePasswordController::class)->name('account.update.change-password');
+
+                /** Update user details */
+                //
             });
 
             /** Create pin route */

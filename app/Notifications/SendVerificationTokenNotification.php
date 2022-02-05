@@ -23,7 +23,6 @@ class SendVerificationTokenNotification extends Notification implements ShouldQu
     public function toSms(mixed $notifiable): SmsMessage
     {
         return (new SmsMessage)
-            //->from('')
             ->to("{$notifiable->phone_number}")
             ->line("Hi {$notifiable->full_name} {$notifiable->getVerificationToken()} is your verification code.");
     }

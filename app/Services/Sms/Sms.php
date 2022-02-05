@@ -3,7 +3,6 @@
 namespace App\Services\Sms;
 
 use Exception;
-use App\DTOs\SmsResponse;
 use Illuminate\Support\Facades\Http;
 
 class Sms
@@ -27,29 +26,21 @@ class Sms
     }
 
     /** @throws Exception */
-    public function send(array $attributes): array
+    public function send(array $attributes)
     {
-        retry(4, function () use ($attributes) {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json'
-            ])->post($this->base_url. '/api/sms/send', [
-                'to' => $attributes['to'],
-                'from' => $attributes['from'] ?? $this->from,
-                'sms' => $attributes['message'],
-                'type' => $this->type,
-                'channel' => $this->channel,
-                'api_key' => $this->api_key,
-            ]);
+        $time = now()->format('Y-m-d H:i:s');
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json'
+        ])->post($this->base_url. '/api/sms/send', [
+            'to' => $attributes['to'],
+            'from' => empty($attributes['from']) ? $this->from : $attributes['from'],
+            'sms' => $attributes['message'],
+            'type' => $this->type,
+            'channel' => $this->channel,
+            'api_key' => $this->api_key,
+        ])->json();
 
-            $this->status = $response->status();
-            $this->response = $response->json();
-        }, 5000);
-
-        // log state
-
-        return $this->status === 200
-            ? $this->response
-            : [];
+        activity()->log("{$time}::{$response['message']}");
     }
 
     public function balance()
