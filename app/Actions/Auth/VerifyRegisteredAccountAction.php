@@ -12,14 +12,10 @@ class VerifyRegisteredAccountAction
     {
         $user = User::whereUuid($attributes['identifier'])->first();
 
-        $user->markPhoneAsVerified();
-
-        $user->status->transition(Active::class);
-
-        // Create virtual account
+        $user->verifyAccount();
 
         CreateVirtualAccountJob::dispatch($user);
 
-        return $user->phoneIsVerified();
+        return $user->accountIsVerified();
     }
 }

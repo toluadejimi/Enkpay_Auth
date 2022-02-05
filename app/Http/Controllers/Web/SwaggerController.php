@@ -70,6 +70,14 @@ use App\Http\Controllers\Controller;
  *           )
  *     ),
  *    @OA\Parameter(
+ *           name="account_type",
+ *           in="query",
+ *           required=true,
+ *           @OA\Schema(
+ *                 type="string"
+ *           )
+ *     ),
+ *    @OA\Parameter(
  *           name="password",
  *           in="query",
  *           required=true,

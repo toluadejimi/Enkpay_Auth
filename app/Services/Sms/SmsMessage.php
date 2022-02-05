@@ -2,6 +2,8 @@
 
 namespace App\Services\Sms;
 
+use Exception;
+
 class SmsMessage
 {
     protected mixed $client;
@@ -36,7 +38,8 @@ class SmsMessage
         return $this;
     }
 
-    public function send()
+    /** @throws Exception */
+    public function send(): array
     {
         return $this->client->send([
             'to'        => $this->to,

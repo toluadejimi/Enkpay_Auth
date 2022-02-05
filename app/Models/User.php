@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\States\User\Active;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
 use App\States\User\UserStatus;
@@ -62,24 +63,25 @@ class User extends Authenticatable
         });
     }
 
-    public function phone_number(): Attribute
+    public function getPhoneNumberAttribute(): string
     {
-        return new Attribute(
-            get: fn () => PhoneNumber:: make($this->phone, $this->phone_country)
-                ->formatInternational()
-        );
+        return (string) PhoneNumber:: make($this->phone, $this->phone_country)
+                ->formatInternational();
     }
 
-    public function full_name(): Attribute
+    public function getFullNameAttribute(): string
     {
-        return new Attribute(
-            get: fn () => "{$this->last_name} {$this->first_name} {$this->middle_name}"
-        );
+        return "{$this->last_name} {$this->first_name} {$this->middle_name}";
     }
 
     public function phoneIsVerified(): bool
     {
         return !is_null($this->phone_verified_at);
+    }
+
+    public function accountIsVerified()
+    {
+        return $this->status->equals(Active::class);
     }
 
     public function sendVerificationNotification()
@@ -106,6 +108,21 @@ class User extends Authenticatable
         return DB::table('phone_verification_tokens')
             ->where('phone', $this->phone_number)
             ->value('token');
+    }
+
+    public function verifyAccount(): void
+    {
+        $this->markPhoneAsVerified();
+        $this->status->transitionTo(Active::class);
+
+        $this->deletePhoneVerificationToken();
+    }
+
+    public function deletePhoneVerificationToken()
+    {
+        DB::table('phone_verification_tokens')
+            ->where('phone', $this->phone_number)
+            ->delete();
     }
 
     public function virtual_account(): HasOne

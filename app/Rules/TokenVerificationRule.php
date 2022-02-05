@@ -13,9 +13,9 @@ class TokenVerificationRule implements Rule
     protected User $user;
 
     /** Create a new rule instance. */
-    public function __construct(Request $request)
+    public function __construct(string $identifier)
     {
-        $this->user = User::whereUuid($request->identifier)->first();
+        $this->user = User::select(['phone', 'phone_country'])->whereUuid($identifier)->first();
     }
 
     /** Determine if the validation rule passes. */
@@ -24,7 +24,7 @@ class TokenVerificationRule implements Rule
         $phone = PhoneNumber::make($this->user->phone, $this->user->phone_country)
             ->formatInternational();
 
-        $token = DB::table('phone_verification_tokens')->where('phone', $phone)->value('token');
+        $token = DB::table('phone_verification_tokens')->where('phone', '=', $phone)->value('token');
 
         return $value === $token;
     }

@@ -20,6 +20,7 @@ class CreateVirtualAccountsTable extends Migration
                 ->constrained();
             // attributes from response
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

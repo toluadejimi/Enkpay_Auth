@@ -11,8 +11,8 @@ class BaseApiController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data'    => $result,
             'message' => $message,
+            'data'    => $result,
         ]);
     }
 

@@ -2,14 +2,14 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use App\Services\Sms\SmsChannel;
 use App\Services\Sms\SmsMessage;
-use Illuminate\Notifications\Notification;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class VerificationNotification extends Notification implements ShouldQueue
+class SendVerificationTokenNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

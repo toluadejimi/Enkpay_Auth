@@ -20,11 +20,12 @@ class RegisterUserAction
         $user = User::query()->create([
             'last_name' => $attributes['last_name'],
             'first_name' => $attributes['first_name'],
-            'middle_name' => $attributes['middle_name'],
+            'middle_name' => $attributes['middle_name'] ?? null,
             'phone_country' => $country = $attributes['phone_country'],
             'phone' => PhoneNumber::make($attributes['phone'], $country)
                 ->formatForCountry($country),
             'password' => Hash::make($attributes['password']),
+            'type' => $attributes['account_type'],
         ]);
 
         if ($user->exists) {

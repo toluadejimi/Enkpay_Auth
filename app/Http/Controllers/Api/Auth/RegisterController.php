@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 use App\Actions\Auth\RegisterUserAction;
 use App\Http\Requests\TokenVerificationRequest;
@@ -21,9 +22,9 @@ class RegisterController extends BaseApiController
 
         $success['token_type'] = "Bearer";
         $success['token'] =  $user->createToken('ENKPAY_AUTH')->plainTextToken;
-        $success['full_name'] =  $user->full_name;
+        $success = collect($success)->merge(new UserResource($user));
 
-        return $this->sendResponse($success, 'User created successfully.');
+        return $this->sendResponse($success->toArray(), 'User created successfully.');
     }
 
     public function verify(TokenVerificationRequest $request): JsonResponse
@@ -33,7 +34,7 @@ class RegisterController extends BaseApiController
         );
 
         return $state
-            ? response()->json(["message" => "Account successfully verified."], 200)
-            : response()->json(["message" => "Unable to verify account"], 200);
+            ? $this->sendResponse([], 'Account successfully verified.')
+            : $this->sendError('Unable to verify account');
     }
 }
