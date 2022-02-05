@@ -5,6 +5,7 @@ namespace App\Http\Requests\User;
 use App\Enums\AccountTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UserRegistrationRequest extends FormRequest
 {
@@ -15,7 +16,7 @@ class UserRegistrationRequest extends FormRequest
     }
 
     /** Get the validation rules that apply to the request. */
-    public function rules(): array
+    #[ArrayShape(['last_name' => "string[]", 'first_name' => "string[]", 'middle_name' => "string[]", 'phone' => "string[]", 'phone_country' => "string[]", 'account_type' => "string[]", 'password' => "array"])] public function rules(): array
     {
         return [
             'last_name' => ['required', 'string', 'max:255'],

@@ -48,7 +48,6 @@ Route::prefix('auth')->group(function () {
 
             /** Create pin route */
             Route::post('/create-pin', CreatePinController::class)->name('account.create-pin');
-
         });
 
         /** Logout route */
