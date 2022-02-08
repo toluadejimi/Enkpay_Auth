@@ -103,6 +103,31 @@ class RegisterController extends BaseApiController
         return $this->sendResponse($success->toArray(), 'User created successfully.', 201);
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/auth/register/verify",
+     *     summary="Verify a register User",
+     *     tags={"User verification"},
+     *    @OA\Parameter(
+     *           name="token",
+     *           in="query",
+     *           required=true,
+     *           @OA\Schema(
+     *                 type="string"
+     *           )
+     *     ),
+     *    @OA\Parameter(
+     *           name="identifier",
+     *           in="query",
+     *           description="user uuid, sent during registration"
+     *           required=true,
+     *           @OA\Schema(
+     *                 type="string"
+     *           )
+     *     ),
+     *
+     */
     public function verify(TokenVerificationRequest $request): JsonResponse
     {
         $state = VerifyRegisteredAccountAction::execute(

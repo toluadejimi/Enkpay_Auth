@@ -27,8 +27,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 /**
  * @OA\Info(
  *      version="0.0.1",
- *      title="Enkpay Authentication Service",
- *      description="Authentication and Verification Service, Rest Api",
+ *      title="Enkpay Authentication Service API",
+ *      description="Authentication and Verification Service API Documentation.",
  *      @OA\Contact(
  *          email="webmaster@enkpay.com"
  *      ),

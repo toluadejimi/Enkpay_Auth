@@ -4,4 +4,4 @@
 
 ### To run swagger documentation:
 - command: php artisan l5-swagger:generate
-- route: /documentation
+- route: /documentation example: localhost/api/documentation
