@@ -92,7 +92,7 @@ class RegisterController extends BaseApiController
      *   ),
      *   @OA\Response(
      *      response=422,
-     *      description='Validation error'
+     *      description="Validation error"
      *   ),
      * )
      */
@@ -135,7 +135,7 @@ class RegisterController extends BaseApiController
      *   ),
      *   @OA\Response(
      *      response=422,
-     *      description='Validation error'
+     *      description="Validation error"
      *   ),
      * )
      */
