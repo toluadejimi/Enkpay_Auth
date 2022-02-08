@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Rules\TokenVerificationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 class TokenVerificationRequest extends FormRequest
 {
@@ -15,7 +14,6 @@ class TokenVerificationRequest extends FormRequest
     }
 
     /** Get the validation rules that apply to the request. */
-    #[ArrayShape(['identifier' => "string[]", 'token' => "array"])]
     public function rules(): array
     {
         return [

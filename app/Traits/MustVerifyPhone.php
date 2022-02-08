@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use JetBrains\PhpStorm\Pure;
 use Propaganistas\LaravelPhone\PhoneNumber;
 
 trait MustVerifyPhone
@@ -27,21 +26,5 @@ trait MustVerifyPhone
         return $this->forceFill([
             'phone_verified_at' => $this->freshTimestamp(),
         ])->save();
-    }
-
-    public function getPhoneNumber(): string
-    {
-        return "{$this->isd_code}{$this->phone}";
-    }
-
-    #[Pure]
-    public function getPhoneNumberAttribute(): string
-    {
-        return $this->getPhoneNumber();
-    }
-
-    public function getPhoneForVerification(): string
-    {
-        return $this->phone;
     }
 }

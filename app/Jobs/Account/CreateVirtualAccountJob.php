@@ -11,8 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Client\RequestException;
 use App\Actions\Account\CreateVirtualAccount;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use App\Http\Controllers\Api\Account\UpdateUserAccountWithVirtualResponse;
+use App\Actions\UpdateUserAccountWithVirtualResponse;
 
 class CreateVirtualAccountJob implements ShouldQueue
 {

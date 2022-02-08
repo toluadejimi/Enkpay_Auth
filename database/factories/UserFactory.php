@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class UserFactory extends Factory
 {
     /** Define the model's default state. */
-    #[ArrayShape(['last_name' => "string", 'first_name' => "string", 'phone' => "string", 'phone_country' => "mixed", 'password' => "string", 'password_confirmation' => "string"])]
     public function definition(): array
     {
         return [

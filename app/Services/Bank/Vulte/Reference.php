@@ -3,7 +3,6 @@
 namespace App\Services\Bank\Vulte;
 
 use Illuminate\Support\Str;
-use JetBrains\PhpStorm\Pure;
 use Illuminate\Support\Carbon;
 
 class Reference
@@ -31,7 +30,7 @@ class Reference
         return config('services.vulte.mode');
     }
 
-    #[Pure] public static function blindIndex(string $reference): string
+    public static function blindIndex(string $reference): string
     {
         return md5(Str::upper($reference));
     }

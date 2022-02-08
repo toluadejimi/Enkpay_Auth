@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Account;
+namespace App\Actions;
 
 use App\Models\User;
 use App\Notifications\AccountNumberCreatedNotification;

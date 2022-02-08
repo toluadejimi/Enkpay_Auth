@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use App\Rules\UserExistRule;
-use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Foundation\Http\FormRequest;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
@@ -12,7 +11,7 @@ use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
 class NewVerificationTokenRequest extends FormRequest
 {
     /** @throws CountryCodeException */
-    #[ArrayShape(['phone' => "string[]", 'phone_country' => "array"])] public function rules(): array
+    public function rules(): array
     {
         return [
             'phone' => ['required', 'string', 'phone'],

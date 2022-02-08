@@ -21,11 +21,11 @@ class RegisterUserAction
             'last_name' => $attributes['last_name'],
             'first_name' => $attributes['first_name'],
             'middle_name' => $attributes['middle_name'] ?? null,
-            'phone_country' => $country = $attributes['phone_country'],
+            'phone_country' => $country = $attributes['phone_country'] ?? "NG",
             'phone' => PhoneNumber::make($attributes['phone'], $country)
                 ->formatForCountry($country),
             'password' => Hash::make($attributes['password']),
-            'type' => $attributes['account_type'],
+            'type' => $attributes['account_type'] ?? "user",
         ]);
 
         if ($user->exists) {
