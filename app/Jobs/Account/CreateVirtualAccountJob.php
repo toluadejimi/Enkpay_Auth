@@ -26,7 +26,6 @@ class CreateVirtualAccountJob implements ShouldQueue
     /** Create a new job instance. */
     public function __construct(User $user)
     {
-        dd($user);
         $this->user = $user;
     }
 

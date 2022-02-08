@@ -7,13 +7,13 @@ use App\Http\Controllers\Controller;
 
 class BaseApiController extends Controller
 {
-    public function sendResponse($result, $message): JsonResponse
+    public function sendResponse($result, $message, $code = 200): JsonResponse
     {
         return response()->json([
             'success' => true,
             'message' => $message,
             'data'    => $result,
-        ]);
+        ], $code);
     }
 
     public function sendError($error, $errorMessages = [], $code = 404): JsonResponse

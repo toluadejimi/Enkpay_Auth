@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Api\Account;
 
 use App\Models\User;
+use App\Notifications\AccountNumberCreatedNotification;
 
 class UpdateUserAccountWithVirtualResponse
 {
-    public static function execute(User $user, $attributes)
+    public static function execute(User $user, string $virtual_account_number)
     {
-        // update here
-        $user->virtual_account()->create([
-
+        $state = $user->update([
+            'account_number' => $virtual_account_number
         ]);
 
-        // Send notification with details of account number
+        if ($state) {
+            $user->notify(new AccountNumberCreatedNotification($virtual_account_number));
+        }
     }
 }

@@ -12,7 +12,7 @@ class VerifyRegisteredAccountAction
     {
         $user = User::whereUuid($attributes['identifier'])->first();
 
-        $user->verifyAccount();
+        //$user->verifyAccount();
 
         CreateVirtualAccountJob::dispatch($user);
 

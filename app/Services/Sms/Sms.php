@@ -38,7 +38,7 @@ class Sms
             'type' => $this->type,
             'channel' => $this->channel,
             'api_key' => $this->api_key,
-        ])->json();
+        ])->throw()->json();
 
         activity()->log("{$time}::{$response['message']}");
     }

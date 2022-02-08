@@ -24,7 +24,7 @@ class RegisterController extends BaseApiController
         $success['token'] =  $user->createToken('ENKPAY_AUTH')->plainTextToken;
         $success = collect($success)->merge(new UserResource($user));
 
-        return $this->sendResponse($success->toArray(), 'User created successfully.');
+        return $this->sendResponse($success->toArray(), 'User created successfully.', 201);
     }
 
     public function verify(TokenVerificationRequest $request): JsonResponse

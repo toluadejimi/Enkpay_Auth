@@ -43,6 +43,6 @@ class AuthenticationController extends BaseApiController
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->noContent(200);
+        return response()->noContent();
     }
 }

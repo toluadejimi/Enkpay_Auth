@@ -16,6 +16,11 @@ Route::prefix('auth')->group(function () {
     /** Account type routes */
     Route::get('/account-type', AccountTypeCollectionController::class)->name('auth.account-type');
 
+    /** Location routes */
+    Route::prefix('location')->group(function () {
+        //Country, State, City.
+    });
+
     /** Generate new token */
     Route::get('/new-verification-token', NewVerificationTokenController::class)->name('auth.new-verification-token');
 

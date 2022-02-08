@@ -22,7 +22,7 @@ class TokenVerificationRule implements Rule
     public function passes($attribute, $value): bool
     {
         $phone = PhoneNumber::make($this->user->phone, $this->user->phone_country)
-            ->formatInternational();
+            ->formatE164();
 
         $token = DB::table('phone_verification_tokens')->where('phone', '=', $phone)->value('token');
 

@@ -16,8 +16,6 @@ use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\VerificationNotification;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -49,6 +47,7 @@ class User extends Authenticatable
         'pin' => 'encrypted',
         'status' => UserStatus::class,
         'type' => AccountTypeEnum::class,
+        'date_of_birth' => 'datetime',
         'email_verified_at' => 'datetime',
     ];
 
@@ -86,7 +85,7 @@ class User extends Authenticatable
     {
         $this->generateVerificationToken();
 
-        $this->notify(new VerificationNotification());
+        //$this->notify(new VerificationNotification());
     }
 
     public function generateVerificationToken()
@@ -121,10 +120,5 @@ class User extends Authenticatable
         DB::table('phone_verification_tokens')
             ->where('phone', $this->phone_number)
             ->delete();
-    }
-
-    public function virtual_account(): HasOne
-    {
-        return $this->hasOne(VirtualAccount::class, 'user_id');
     }
 }
