@@ -21,7 +21,7 @@ class RegisterController extends BaseApiController
      * @OA\Post(
      *     path="/auth/register",
      *     summary="Register User",
-     *     tags={"Register a user"},
+     *     tags={"Register"},
      *    @OA\Parameter(
      *           name="last_name",
      *           in="query",
@@ -90,6 +90,10 @@ class RegisterController extends BaseApiController
      *      response=200,
      *       description="Success",
      *   ),
+     *   @OA\Response(
+     *      response=422,
+     *      description='Validation error'
+     *   ),
      * )
      */
     public function register(UserRegistrationRequest $request): JsonResponse
@@ -108,7 +112,7 @@ class RegisterController extends BaseApiController
      * @OA\Post(
      *     path="/auth/register/verify",
      *     summary="Verify a register User",
-     *     tags={"User verification"},
+     *     tags={"Verify"},
      *    @OA\Parameter(
      *           name="token",
      *           in="query",
@@ -120,13 +124,20 @@ class RegisterController extends BaseApiController
      *    @OA\Parameter(
      *           name="identifier",
      *           in="query",
-     *           description="user uuid, sent during registration"
      *           required=true,
      *           @OA\Schema(
      *                 type="string"
      *           )
      *     ),
-     *
+     *    @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *   ),
+     *   @OA\Response(
+     *      response=422,
+     *      description='Validation error'
+     *   ),
+     * )
      */
     public function verify(TokenVerificationRequest $request): JsonResponse
     {
