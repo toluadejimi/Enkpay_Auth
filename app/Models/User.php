@@ -85,7 +85,7 @@ class User extends Authenticatable
     {
         $this->generateVerificationToken();
 
-        //$this->notify(new VerificationNotification());
+        $this->notify(new VerificationNotification());
     }
 
     public function generateVerificationToken()
