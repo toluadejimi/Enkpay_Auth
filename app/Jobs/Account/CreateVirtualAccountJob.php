@@ -4,21 +4,16 @@ namespace App\Jobs\Account;
 
 use Exception;
 use App\Models\User;
-use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Client\RequestException;
 use App\Actions\Account\CreateVirtualAccount;
 use App\Actions\UpdateUserAccountWithVirtualResponse;
 
-class CreateVirtualAccountJob implements ShouldQueue
+class CreateVirtualAccountJob
 {
-    use Queueable;
     use Dispatchable;
     use SerializesModels;
-    use InteractsWithQueue;
 
     protected User $user;
 

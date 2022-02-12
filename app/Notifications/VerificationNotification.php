@@ -2,17 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use App\Services\Sms\SmsChannel;
 use App\Services\Sms\SmsMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 
-class VerificationNotification extends Notification implements ShouldQueue
+class VerificationNotification extends Notification
 {
-    use Queueable;
-
     /** Get the notification's delivery channels. */
     public function via(mixed $notifiable): array
     {

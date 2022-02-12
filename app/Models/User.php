@@ -14,7 +14,6 @@ use App\Support\Generators\OTPToken;
 use Illuminate\Notifications\Notifiable;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\VerificationNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

@@ -15,7 +15,7 @@ class UserResource extends JsonResource
             'id' => $this->uuid,
             'name' => $this->full_name,
             'phone_number' => PhoneNumber::make($this->phone, $this->phone_country)
-                ->formatInternational(),
+                ->formatE164(),
             'account_type' => $this->type,
             'account_number' => $this->account_number,
         ];
