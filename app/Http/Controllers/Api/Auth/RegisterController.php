@@ -55,6 +55,14 @@ class RegisterController extends BaseApiController
      *           )
      *     ),
      *    @OA\Parameter(
+     *           name="device_id",
+     *           in="query",
+     *           required=true,
+     *           @OA\Schema(
+     *                 type="string"
+     *           )
+     *     ),
+     *    @OA\Parameter(
      *           name="phone",
      *           in="query",
      *           required=true,
