@@ -50,7 +50,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -61,7 +61,7 @@ class User extends Authenticatable
 
     public function getPhoneNumberAttribute(): string
     {
-        return (string) PhoneNumber:: make($this->phone, $this->phone_country)
+        return (string) PhoneNumber::make($this->phone, $this->phone_country)
                 ->formatE164();
     }
 
@@ -75,19 +75,19 @@ class User extends Authenticatable
         return !is_null($this->phone_verified_at);
     }
 
-    public function accountIsVerified()
+    public function accountIsVerified(): bool
     {
         return $this->status->equals(Active::class);
     }
 
-    public function sendVerificationNotification()
+    public function sendVerificationNotification(): void
     {
         $this->generateVerificationToken();
 
         $this->notify(new VerificationNotification());
     }
 
-    public function generateVerificationToken()
+    public function generateVerificationToken(): void
     {
         DB::table('phone_verification_tokens')
             ->upsert([
@@ -99,7 +99,7 @@ class User extends Authenticatable
             ], ['phone'], ['token', 'created_at']);
     }
 
-    public function getVerificationToken()
+    public function getVerificationToken(): mixed
     {
         return DB::table('phone_verification_tokens')
             ->where('phone', $this->phone_number)
@@ -114,7 +114,7 @@ class User extends Authenticatable
         $this->deletePhoneVerificationToken();
     }
 
-    public function deletePhoneVerificationToken()
+    public function deletePhoneVerificationToken(): void
     {
         DB::table('phone_verification_tokens')
             ->where('phone', $this->phone_number)
