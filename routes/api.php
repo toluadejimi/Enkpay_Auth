@@ -1,6 +1,7 @@
 <?php
 /** API Routes */
 
+use App\Http\Controllers\Api\SendPhoneVerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\Auth\RegisterController;
@@ -30,6 +31,8 @@ Route::prefix('auth')->group(function () {
     /** Register routes */
     Route::prefix('/register')->group(function () {
             Route::post('/', [RegisterController::class, 'register'])->name('auth.register');
+            Route::post('/send-verification', [SendPhoneVerificationController::class, '__invoke'])
+                ->name('auth.register.send.verification');
             Route::middleware('auth:sanctum')
                 ->post('/verify', [RegisterController::class, 'verify'])->name('auth.verify');
         });
