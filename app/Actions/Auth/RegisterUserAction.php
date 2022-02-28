@@ -21,6 +21,7 @@ class RegisterUserAction
             'last_name' => $attributes['last_name'],
             'first_name' => $attributes['first_name'],
             'middle_name' => $attributes['middle_name'] ?? null,
+            'email' => $attributes['email'] ?? null,
             'phone_country' => $country = $attributes['phone_country'] ?? "NG",
             'phone' => PhoneNumber::make($attributes['phone'], $country)
                 ->formatForCountry($country),

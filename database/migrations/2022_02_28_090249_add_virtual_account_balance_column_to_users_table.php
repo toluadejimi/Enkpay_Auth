@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddDeviceIdColumnToUsersTable extends Migration
+class AddVirtualAccountBalanceColumnToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddDeviceIdColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('device_id')->after('phone_country')->nullable();
+            $table->integer('virtual_account_balance')->after('account_number')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddDeviceIdColumnToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->removeColumn('device_id');
+            $table->removeColumn('virtual_account_balance');
         });
     }
 }

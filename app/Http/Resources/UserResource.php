@@ -18,6 +18,7 @@ class UserResource extends JsonResource
                 ->formatE164(),
             'account_type' => $this->type,
             'account_number' => $this->account_number,
+            'account_balance' => $this->virtual_account_balance,
         ];
     }
 }
