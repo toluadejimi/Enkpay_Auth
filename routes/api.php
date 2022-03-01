@@ -1,7 +1,6 @@
 <?php
 /** API Routes */
 
-use App\Http\Controllers\Api\SendPhoneVerificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\Auth\RegisterController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\Api\Account\CreatePinController;
 use App\Http\Controllers\Api\Auth\PasswordResetController;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Http\Controllers\Api\NewVerificationTokenController;
+use App\Http\Controllers\Api\SendPhoneVerificationController;
 use App\Http\Controllers\Api\Account\ChangePasswordController;
 use App\Http\Controllers\Api\Auth\AccountTypeCollectionController;
 
