@@ -9,7 +9,7 @@ class SendPhoneVerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'identifier' => ['required', 'string']
+            'identifier' => ['required', 'string', 'exists:users,uuid']
         ];
     }
 
