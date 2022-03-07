@@ -114,6 +114,11 @@ class User extends Authenticatable
         $this->deletePhoneVerificationToken();
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->type === "admin";
+    }
+
     public function deletePhoneVerificationToken(): void
     {
         DB::table('phone_verification_tokens')
