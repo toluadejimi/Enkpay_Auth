@@ -86,7 +86,7 @@ Route::middleware(['auth:sanctum', 'admin'])
     ->prefix('/admin')
     ->group(function () {
         /** Users route */
-        Route::get('/user', UserIndexApiController::class)
+        Route::get('/users', UserIndexApiController::class)
             ->name('admin.user.index');
     }
 );
