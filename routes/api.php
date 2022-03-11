@@ -70,6 +70,9 @@ Route::prefix('auth')
                         /** Create pin route */
                         Route::post('/create-pin', CreatePinController::class)
                             ->name('account.create-pin');
+
+                        /** Update account balance */
+
                     }
                 );
 
