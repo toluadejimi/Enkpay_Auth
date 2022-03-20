@@ -1,6 +1,7 @@
 <?php
 /** API Routes */
 
+use App\Http\Controllers\Api\Account\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\UserIndexApiController;
@@ -75,6 +76,9 @@ Route::prefix('auth')
                                     ->name('');
                             }
                         );
+
+                        /** Profile route */
+                        Route::get('/profile', [ProfileController::class, '__invoke'])->name('account.profile');
 
                         /** Create pin route */
                         Route::post('/create-pin', CreatePinController::class)
