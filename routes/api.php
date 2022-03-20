@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserIndexApiController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Account\CreatePinController;
 use App\Http\Controllers\Api\Auth\PasswordResetController;
+use App\Http\Controllers\Api\Account\TransactionController;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Http\Controllers\Api\NewVerificationTokenController;
 use App\Http\Controllers\Api\SendPhoneVerificationController;
@@ -64,6 +65,14 @@ Route::prefix('auth')
 
                                 /** Update user details */
                                 //
+                            }
+                        );
+
+                        /** Transaction routes */
+                        Route::prefix('transaction')
+                            ->group(function () {
+                                Route::post('/', [TransactionController::class, ''])
+                                    ->name('');
                             }
                         );
 
