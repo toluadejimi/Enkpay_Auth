@@ -72,6 +72,9 @@ Route::prefix('auth')
                             ->name('account.create-pin');
 
                         /** Update account balance */
+                        // request virtual balance
+                        // post amount to deduct
+                        // return original virtual amount
 
                     }
                 );

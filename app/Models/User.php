@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\States\User\Active;
+use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
 use App\States\User\UserStatus;
@@ -18,9 +20,10 @@ use App\Notifications\VerificationNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Wallet
 {
     use HasStates;
+    use HasWallet;
     use Notifiable;
     use HasFactory;
     use SoftDeletes;
