@@ -72,8 +72,12 @@ Route::prefix('auth')
                         /** Transaction routes */
                         Route::prefix('transaction')
                             ->group(function () {
-                                Route::post('/', [TransactionController::class, ''])
-                                    ->name('');
+                                Route::get('/history', [TransactionController::class, 'history'])
+                                    ->name('account.transaction.history');
+                                Route::post('/credit', [TransactionController::class, 'credit'])
+                                    ->name('account.transaction.credit');
+                                Route::post('/debit', [TransactionController::class, 'debit'])
+                                    ->name('account.transaction.debit');
                             }
                         );
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\States\User\Active;
 use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
@@ -127,5 +128,23 @@ class User extends Authenticatable implements Wallet
         DB::table('phone_verification_tokens')
             ->where('phone', $this->phone_number)
             ->delete();
+    }
+
+    public function debit(int $amount, array $meta = [])
+    {
+        try {
+            $this->withdraw($amount, $meta);
+        } catch (ExceptionInterface $exception) {
+            // handle exception
+        }
+    }
+
+    public function credit(int $amount, array $meta = [])
+    {
+        try {
+            $this->deposit($amount, $meta);
+        } catch (ExceptionInterface $exception) {
+            // handle exception
+        }
     }
 }
