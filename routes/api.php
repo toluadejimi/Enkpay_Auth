@@ -1,11 +1,11 @@
 <?php
 /** API Routes */
 
-use App\Http\Controllers\Api\Account\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\UserIndexApiController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Account\CreatePinController;
 use App\Http\Controllers\Api\Auth\PasswordResetController;
 use App\Http\Controllers\Api\Account\TransactionController;
@@ -14,12 +14,15 @@ use App\Http\Controllers\Api\NewVerificationTokenController;
 use App\Http\Controllers\Api\SendPhoneVerificationController;
 use App\Http\Controllers\Api\Account\ChangePasswordController;
 use App\Http\Controllers\Api\Auth\AccountTypeCollectionController;
+use App\Http\Controllers\Api\Transaction\TransactionTransferController;
+use App\Http\Controllers\Api\Transaction\UpdateTransactionPinController;
 
 /** Authentication routes */
 Route::prefix('auth')
     ->group(function () {
         /** Account type routes */
-        Route::get('/account-type', AccountTypeCollectionController::class)->name('auth.account-type');
+        Route::get('/account-type', AccountTypeCollectionController::class)
+            ->name('auth.account-type');
 
         /** Location routes */
         Route::prefix('location')
@@ -52,55 +55,61 @@ Route::prefix('auth')
             Route::post('/reset-password', NewPasswordController::class)->name('password.update');
         });
 
-        /** Authenticated routes */
-        Route::middleware('auth:sanctum')
-            ->prefix('account')
+        /** Logout route */
+        Route::post('/logout', [AuthenticationController::class, 'logout'])
+            ->name('account.logout');
+    }
+);
+
+Route::middleware('auth:sanctum')
+    ->prefix('account')
+    ->group(function () {
+        Route::middleware('account.verified')
             ->group(function () {
-                Route::middleware('account.verified')
+                /** Updates routes */
+                Route::prefix('/update')
                     ->group(function () {
-                        /** Updates routes */
-                        Route::prefix('/update')
-                            ->group(function () {
-                            /** Change password route */
-                                Route::post('/change-password', ChangePasswordController::class)->name('account.update.change-password');
+                        /** Change password route */
+                        Route::post('/change-password', ChangePasswordController::class)
+                            ->name('account.update.change-password');
 
-                                /** Update user details */
-                                //
-                            }
-                        );
-
-                        /** Transaction routes */
-                        Route::prefix('transaction')
-                            ->group(function () {
-                                Route::get('/history', [TransactionController::class, 'history'])
-                                    ->name('account.transaction.history');
-                                Route::post('/credit', [TransactionController::class, 'credit'])
-                                    ->name('account.transaction.credit');
-                                Route::post('/debit', [TransactionController::class, 'debit'])
-                                    ->name('account.transaction.debit');
-                            }
-                        );
-
-                        /** Profile route */
-                        Route::get('/profile', [ProfileController::class, '__invoke'])->name('account.profile');
-
-                        /** Create pin route */
-                        Route::post('/create-pin', CreatePinController::class)
-                            ->name('account.create-pin');
-
-                        /** Update account balance */
-                        // request virtual balance
-                        // post amount to deduct
-                        // return original virtual amount
-
+                        /** Update user details */
+                        /** Update pin route */
+                        Route::post('/transaction-pin', UpdateTransactionPinController::class)
+                            ->name('account.update.transaction-pin');
+                        //
                     }
                 );
 
-                /** Logout route */
-                Route::post('/logout', [AuthenticationController::class, 'logout'])
-                    ->name('account.logout');
+                /** Transaction routes */
+                Route::prefix('transaction')
+                    ->group(function () {
+                        Route::get('/history', [TransactionController::class, 'history'])
+                            ->name('account.transaction.history');
+                        Route::post('/credit', [TransactionController::class, 'credit'])
+                            ->name('account.transaction.credit');
+                        Route::post('/debit', [TransactionController::class, 'debit'])
+                            ->name('account.transaction.debit');
+                        Route::post('/transfer', [TransactionTransferController::class, '__invoke'])
+                            ->name('account.transaction.transfer');
+                    }
+                    );
+
+                /** Profile route */
+                Route::get('/profile', [ProfileController::class, '__invoke'])
+                    ->name('account.profile');
+
+                /** Create pin route */
+                Route::post('/create-pin', CreatePinController::class)
+                    ->name('account.create-pin');
+
+                /** Update account balance */
+                // request virtual balance
+                // post amount to deduct
+                // return original virtual amount
+
             }
-        );
+            );
     }
 );
 

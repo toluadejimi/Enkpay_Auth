@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class AddVirtualAccountBalanceColumnToUsersTable extends Migration
+class AddSuspendedStateColumnToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddVirtualAccountBalanceColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('virtual_account_balance')->after('account_number')->nullable();
+            $table->string('suspended_state')->after('status');
         });
     }
 
@@ -26,7 +26,7 @@ class AddVirtualAccountBalanceColumnToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->removeColumn('virtual_account_balance');
+            $table->removeColumn('suspended_state');
         });
     }
 }

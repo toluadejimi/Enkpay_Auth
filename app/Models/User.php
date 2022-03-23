@@ -2,29 +2,36 @@
 
 namespace App\Models;
 
+use App\States\User\Activated;
 use App\States\User\Active;
-use Bavix\Wallet\Interfaces\Wallet;
-use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
-use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
 use App\States\User\UserStatus;
 use App\Traits\MustVerifyPhone;
 use Spatie\ModelStates\HasStates;
 use Laravel\Sanctum\HasApiTokens;
+use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Support\Facades\DB;
+use Bavix\Wallet\Traits\HasWallets;
+use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Traits\CanConfirm;
 use App\Support\Generators\OTPToken;
+use App\States\User\UserSuspendedState;
+use Bavix\Wallet\Interfaces\Confirmable;
 use Illuminate\Notifications\Notifiable;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Notifications\VerificationNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 
-class User extends Authenticatable implements Wallet
+class User extends Authenticatable implements Wallet, Confirmable
 {
     use HasStates;
     use HasWallet;
+    //use HasWallets;
+    use CanConfirm;
     use Notifiable;
     use HasFactory;
     use SoftDeletes;
@@ -50,6 +57,7 @@ class User extends Authenticatable implements Wallet
         'pin' => 'encrypted',
         'status' => UserStatus::class,
         'type' => AccountTypeEnum::class,
+        'suspended_state' => UserSuspendedState::class,
         'date_of_birth' => 'datetime',
         'email_verified_at' => 'datetime',
     ];
@@ -146,5 +154,20 @@ class User extends Authenticatable implements Wallet
         } catch (ExceptionInterface $exception) {
             // handle exception
         }
+    }
+
+    public function accountBalance(): int
+    {
+        return $this->wallet->balanceInt;
+    }
+
+    public function canTransfer(int $amount): bool
+    {
+        return $this->balanceInt > $amount;
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->suspended_state->equals(Activated::class);
     }
 }
