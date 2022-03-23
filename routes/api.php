@@ -1,6 +1,7 @@
 <?php
 /** API Routes */
 
+use App\Http\Controllers\Api\Account\ActivateAndDeactivateAccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\UserIndexApiController;
@@ -120,5 +121,19 @@ Route::middleware(['auth:sanctum', 'admin'])
         /** Users route */
         Route::get('/users', UserIndexApiController::class)
             ->name('admin.user.index');
+
+        /** Account routes */
+        Route::prefix('account')
+            ->group(function () {
+                Route::prefix('suspend')
+                    ->group(function () {
+                        Route::get('/{user:uuid}', [ActivateAndDeactivateAccountController::class, 'activate'])
+                            ->name('admin.account.activate');
+                        Route::get('/revoke/{user:uuid}', [ActivateAndDeactivateAccountController::class, 'deactivate'])
+                            ->name('admin.account.activate');
+                    }
+                );
+            }
+        );
     }
 );

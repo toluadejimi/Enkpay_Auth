@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\States\User\Activated;
 use App\States\User\Active;
+use App\States\User\Deactivated;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
 use App\States\User\UserStatus;
@@ -169,5 +170,16 @@ class User extends Authenticatable implements Wallet, Confirmable
     public function isSuspended(): bool
     {
         return $this->suspended_state->equals(Activated::class);
+    }
+
+    public function suspendAccount(): void
+    {
+        $this->suspended_state->transition(Activated::class);
+    }
+
+    public function revokeAccountSuspension(): void
+    {
+        $this->suspended_state->transition(Deactivated::class);
+
     }
 }
