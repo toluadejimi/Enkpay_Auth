@@ -25,13 +25,6 @@ Route::prefix('auth')
         Route::get('/account-type', AccountTypeCollectionController::class)
             ->name('auth.account-type');
 
-        /** Location routes */
-        Route::prefix('location')
-            ->group(function () {
-            //Country, State, City.
-            }
-        );
-
         /** Generate new token */
         Route::get('/new-verification-token', NewVerificationTokenController::class)
             ->name('auth.new-verification-token');
@@ -73,12 +66,10 @@ Route::middleware('auth:sanctum')
                         /** Change password route */
                         Route::post('/change-password', ChangePasswordController::class)
                             ->name('account.update.change-password');
-
                         /** Update user details */
                         /** Update pin route */
                         Route::post('/transaction-pin', UpdateTransactionPinController::class)
                             ->name('account.update.transaction-pin');
-                        //
                     }
                 );
 
@@ -94,7 +85,7 @@ Route::middleware('auth:sanctum')
                         Route::post('/transfer', [TransactionTransferController::class, '__invoke'])
                             ->name('account.transaction.transfer');
                     }
-                    );
+                );
 
                 /** Profile route */
                 Route::get('/profile', [ProfileController::class, '__invoke'])
@@ -103,18 +94,12 @@ Route::middleware('auth:sanctum')
                 /** Create pin route */
                 Route::post('/create-pin', CreatePinController::class)
                     ->name('account.create-pin');
-
-                /** Update account balance */
-                // request virtual balance
-                // post amount to deduct
-                // return original virtual amount
-
             }
             );
     }
 );
 
-/** Administrative routes*/
+/** Administrative routes */
 Route::middleware(['auth:sanctum', 'admin'])
     ->prefix('/admin')
     ->group(function () {
