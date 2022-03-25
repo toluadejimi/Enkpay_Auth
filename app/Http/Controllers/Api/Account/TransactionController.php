@@ -19,7 +19,7 @@ class TransactionController extends BaseApiController
 
     public function credit()
     {
-        $this->user->credit($amount);
+        //$this->user->credit($amount);
     }
 
     public function debit(DebitRequest $request)
