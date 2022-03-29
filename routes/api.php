@@ -1,7 +1,7 @@
 <?php
 /** API Routes */
 
-use App\Http\Controllers\Api\Account\ActivateAndDeactivateAccountController;
+use App\Http\Controllers\Api\Transaction\GetBanksController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\UserIndexApiController;
@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Account\ChangePasswordController;
 use App\Http\Controllers\Api\Auth\AccountTypeCollectionController;
 use App\Http\Controllers\Api\Transaction\TransactionTransferController;
 use App\Http\Controllers\Api\Transaction\UpdateTransactionPinController;
+use App\Http\Controllers\Api\Account\ActivateAndDeactivateAccountController;
 
 /** Authentication routes */
 Route::prefix('auth')
@@ -60,6 +61,9 @@ Route::middleware('auth:sanctum')
     ->group(function () {
         Route::middleware('account.verified')
             ->group(function () {
+                /** Get banks */
+                Route::get('/banks', [GetBanksController::class, '__invoke'])
+                    ->name('account.bank.index');
                 /** Updates routes */
                 Route::prefix('/update')
                     ->group(function () {
