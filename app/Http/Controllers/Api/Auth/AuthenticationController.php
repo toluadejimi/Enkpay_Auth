@@ -33,7 +33,7 @@ class AuthenticationController extends BaseApiController
 
     public function logout(Request $request): Response
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::user()->tokens()->delete();
 
         return response()->noContent();
     }
