@@ -3,6 +3,7 @@
 namespace App\Actions\Transaction;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use App\Services\Bank\Vulte\Reference;
 use Illuminate\Http\Client\RequestException;
@@ -51,7 +52,10 @@ class GetBanksAction
 
         if ($response['status'] === 'Successful') {
             activity()->log("{$response['status']}:{$response['message']}");
-            return $response['data']['provider_response']['banks'];
+
+            return Cache::remember('api.banks', 3600, function () use ($response) {
+                return $response['data']['provider_response']['banks'];
+            });
         }
 
         activity()->log("{$response['status']}:{$response['data']['error']['message']}");
