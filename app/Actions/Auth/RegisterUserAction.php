@@ -27,7 +27,7 @@ class RegisterUserAction
             'phone' => PhoneNumber::make($attributes['phone'], $country)
                 ->formatForCountry($country),
             'password' => Hash::make($attributes['password']),
-            'type' => $attributes['account_type'] ?? "user",
+            'type' => "user",
         ]);
 
         if ($user->exists) {

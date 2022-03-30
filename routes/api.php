@@ -1,6 +1,7 @@
 <?php
 /** API Routes */
 
+use App\Http\Controllers\Api\Transaction\ExternalTransferController;
 use App\Http\Controllers\Api\Transaction\GetBanksController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
@@ -82,12 +83,18 @@ Route::middleware('auth:sanctum')
                     ->group(function () {
                         Route::get('/history', [TransactionController::class, 'history'])
                             ->name('account.transaction.history');
-                        Route::post('/credit', [TransactionController::class, 'credit'])
-                            ->name('account.transaction.credit');
-                        Route::post('/debit', [TransactionController::class, 'debit'])
-                            ->name('account.transaction.debit');
-                        Route::post('/transfer', [TransactionTransferController::class, '__invoke'])
-                            ->name('account.transaction.transfer');
+                        Route::prefix('wallet')
+                            ->group(function () {
+                                Route::post('/credit', [TransactionController::class, 'credit'])
+                                    ->name('account.transaction.wallet.credit');
+                                Route::post('/debit', [TransactionController::class, 'debit'])
+                                    ->name('account.transaction.wallet.debit');
+                                Route::post('/transfer', [TransactionTransferController::class, '__invoke'])
+                                    ->name('account.transaction.wallet.transfer');
+                            }
+                        );
+                        Route::post('/bank/transfer', [ExternalTransferController::class, '__invoke'])
+                            ->name('account.transaction.bank.transfer');
                     }
                 );
 

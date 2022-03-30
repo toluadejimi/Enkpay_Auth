@@ -48,13 +48,13 @@ class GetBanksAction
 
             ])->throw()->json();
 
-        // Response
-        /*if ($response['status'] === 'Successful') {
+
+        if ($response['status'] === 'Successful') {
             activity()->log("{$response['status']}:{$response['message']}");
-            return $response['data']['provider_response']['account_number'];
+            return $response['data']['provider_response']['banks'];
         }
 
-        activity()->log("{$response['status']}:{$response['data']['error']['message']}");*/
+        activity()->log("{$response['status']}:{$response['data']['error']['message']}");
 
         return null;
     }

@@ -25,7 +25,6 @@ class UserRegistrationRequest extends FormRequest
             'phone' => ['required', 'string', 'phone'],
             'phone_country' => ['sometimes','required_with:phone'],
             'device_id' => ['sometimes','required', 'string', 'max:255'],
-            'account_type' => ['required', 'string', 'enum:'.AccountTypeEnum::class],
             'password' => ['required', 'string', 'confirmed', Password::default()]
         ];
     }
