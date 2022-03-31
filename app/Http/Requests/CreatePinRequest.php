@@ -18,7 +18,7 @@ class CreatePinRequest extends FormRequest
     {
         return [
             'password' => ['required', 'string', new CurrentPasswordRule()],
-            'pin' => ['required', 'string'],
+            'pin' => ['required', 'string', 'min:6', 'confirmed'],
         ];
     }
 }
