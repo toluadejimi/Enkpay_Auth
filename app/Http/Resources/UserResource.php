@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Facades\Auth;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,6 +18,7 @@ class UserResource extends JsonResource
             'phone_number' => PhoneNumber::make($this->phone, $this->phone_country)
                 ->formatE164(),
             'account_type' => $this->type,
+            'pin_status' => Auth::user()->hasCreatePin() ? 'Created' : null,
             'account_number' => $this->account_number,
             'account_balance' => $this->virtual_account_balance,
         ];

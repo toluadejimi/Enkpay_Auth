@@ -1,21 +1,22 @@
 <?php
 /** API Routes */
 
-use App\Http\Controllers\Api\Transaction\ExternalTransferController;
-use App\Http\Controllers\Api\Transaction\GetBanksController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\UserIndexApiController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Account\ProfileController;
+use App\Http\Controllers\Api\Account\VerifyPinController;
 use App\Http\Controllers\Api\Account\CreatePinController;
 use App\Http\Controllers\Api\Auth\PasswordResetController;
 use App\Http\Controllers\Api\Account\TransactionController;
 use App\Http\Controllers\Api\Auth\AuthenticationController;
+use App\Http\Controllers\Api\Transaction\GetBanksController;
 use App\Http\Controllers\Api\NewVerificationTokenController;
 use App\Http\Controllers\Api\SendPhoneVerificationController;
 use App\Http\Controllers\Api\Account\ChangePasswordController;
 use App\Http\Controllers\Api\Auth\AccountTypeCollectionController;
+use App\Http\Controllers\Api\Transaction\ExternalTransferController;
 use App\Http\Controllers\Api\Transaction\TransactionTransferController;
 use App\Http\Controllers\Api\Transaction\UpdateTransactionPinController;
 use App\Http\Controllers\Api\Account\ActivateAndDeactivateAccountController;
@@ -32,7 +33,8 @@ Route::prefix('auth')
             ->name('auth.new-verification-token');
 
         /** Login route */
-        Route::post('/login', [AuthenticationController::class, 'login']);
+        Route::post('/login', [AuthenticationController::class, 'login'])
+            ->name('auth.login');
 
         /** Register routes */
         Route::prefix('/register')->group(function () {
@@ -105,8 +107,12 @@ Route::middleware('auth:sanctum')
                 /** Create pin route */
                 Route::post('/create-pin', CreatePinController::class)
                     ->name('account.create-pin');
+
+                /** Verify pin route */
+                Route::post('/verify-pin', VerifyPinController::class)
+                    ->name('account.verify-pin');
             }
-            );
+        );
     }
 );
 

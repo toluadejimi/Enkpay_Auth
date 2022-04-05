@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\CurrentPasswordRule;
+use App\Rules\CurrentPhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreatePinRequest extends FormRequest
@@ -17,7 +18,7 @@ class CreatePinRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => ['required', 'string', new CurrentPasswordRule()],
+            'phone' => ['required', 'string', 'phone:NG', new CurrentPhoneRule()],
             'pin' => ['required', 'string', 'min:6', 'confirmed'],
         ];
     }

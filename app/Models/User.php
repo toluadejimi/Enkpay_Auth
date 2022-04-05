@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
 use App\States\User\UserStatus;
 use App\Traits\MustVerifyPhone;
+use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
 use Spatie\ModelStates\HasStates;
 use Laravel\Sanctum\HasApiTokens;
 use Bavix\Wallet\Traits\HasWallet;
@@ -70,6 +71,34 @@ class User extends Authenticatable implements Wallet, Confirmable
         static::creating(function (User $user) {
             $user->uuid = Str::orderedUuid();
         });
+
+        static::saving(function (User $user) {
+            if ($user->isDirty('pin')) {
+                $user->pin_blind_index = hash('sha256', $user->pin);
+            }
+        });
+    }
+
+    public function validatePin(string $pin): bool
+    {
+        return $this->pin_blind_index === hash('sha256', $pin);
+    }
+
+    public function hasCreatePin(): bool
+    {
+        return ! is_null($this->pin);
+    }
+
+    /** @throws CountryCodeException */
+    public function validatePhone(string $phone): bool
+    {
+        return $this->phone === $this->countryFormatPhoneNumber($phone);
+    }
+
+    /** @throws CountryCodeException */
+    public function countryFormatPhoneNumber(string $phone): string
+    {
+        return PhoneNumber::make($phone, 'NG')->formatForCountry('NG');
     }
 
     public function getPhoneNumberAttribute(): string

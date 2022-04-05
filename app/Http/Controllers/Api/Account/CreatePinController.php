@@ -11,7 +11,12 @@ class CreatePinController extends BaseApiController
 {
     public function __invoke(CreatePinRequest $request): JsonResponse
     {
+
         $state = CreatePinAction::execute($request->toArray());
+
+        if ($state === null) {
+            return $this->sendError('Pin already created...');
+        }
 
         return $state
             ? $this->sendResponse([], 'Account Pin successfully created.')

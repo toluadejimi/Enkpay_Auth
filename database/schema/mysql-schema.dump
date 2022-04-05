@@ -191,6 +191,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
+  `pin_blind_index` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_phone_unique` (`phone`),
   UNIQUE KEY `users_email_unique` (`email`)
@@ -243,3 +244,4 @@ INSERT INTO `migrations` VALUES (14,'2018_11_15_124230_create_wallets_table',2);
 INSERT INTO `migrations` VALUES (15,'2021_11_02_202021_update_wallets_uuid_table',2);
 INSERT INTO `migrations` VALUES (16,'2022_03_21_112422_add_suspended_state_column_to_users_table',3);
 INSERT INTO `migrations` VALUES (17,'2022_03_31_090400_update_pin_column_on_users_table',4);
+INSERT INTO `migrations` VALUES (18,'2022_04_05_050914_create_pin_blind_index_column_on_users_table',5);
