@@ -14,10 +14,10 @@ class PasswordResetController extends BaseApiController
     {
         $user = $request->expectedUser();
 
-        $success = new UserResource($user);
+        $user->generateVerificationToken();
 
         $user->notify(new SendVerificationTokenNotification());
 
-        return $this->sendResponse($success, 'A Verification token has been sent');
+        return $this->sendResponse(['id' => $user->uuid], 'A Verification token has been sent');
     }
 }

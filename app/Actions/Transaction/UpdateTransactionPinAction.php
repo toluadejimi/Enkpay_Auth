@@ -9,7 +9,7 @@ class UpdateTransactionPinAction
     public static function execute(array $attributes): bool
     {
         $state = Auth::user()->update([
-            'pin' => encrypt($attributes('pin'))
+            'pin' => encrypt($attributes['pin'])
         ]);
 
         if ($state) {

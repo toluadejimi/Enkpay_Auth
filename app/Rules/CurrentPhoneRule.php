@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Validation\Rule;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
 
 class CurrentPhoneRule implements Rule

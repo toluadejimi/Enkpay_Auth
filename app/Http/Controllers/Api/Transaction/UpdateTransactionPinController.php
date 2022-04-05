@@ -13,6 +13,9 @@ class UpdateTransactionPinController
             $request->validated()
         );
 
-        // return response
+        return response()->json([
+            'status' => $state,
+            'message' => $state ? 'Transaction pin successfully updated' : 'Unable to update transaction pin'
+        ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\States\User\Activated;
 use App\States\User\Active;
 use App\States\User\Deactivated;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
 use App\States\User\UserStatus;
@@ -56,7 +57,6 @@ class User extends Authenticatable implements Wallet, Confirmable
      * @var array<string, string>
      */
     protected $casts = [
-        'pin' => 'encrypted',
         'status' => UserStatus::class,
         'type' => AccountTypeEnum::class,
         'suspended_state' => UserSuspendedState::class,
@@ -71,17 +71,20 @@ class User extends Authenticatable implements Wallet, Confirmable
         static::creating(function (User $user) {
             $user->uuid = Str::orderedUuid();
         });
+    }
 
+    protected static function booted()
+    {
         static::saving(function (User $user) {
             if ($user->isDirty('pin')) {
-                $user->pin_blind_index = hash('sha256', $user->pin);
+                $user->pin = md5($user->pin);
             }
         });
     }
 
     public function validatePin(string $pin): bool
     {
-        return $this->pin_blind_index === hash('sha256', $pin);
+        return $this->pin === md5($pin);
     }
 
     public function hasCreatePin(): bool

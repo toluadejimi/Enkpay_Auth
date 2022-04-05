@@ -55,6 +55,7 @@ Route::prefix('auth')
 
         /** Logout route */
         Route::post('/logout', [AuthenticationController::class, 'logout'])
+            ->middleware('auth:sanctum')
             ->name('account.logout');
     }
 );
