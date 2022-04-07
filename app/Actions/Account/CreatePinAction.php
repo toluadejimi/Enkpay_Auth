@@ -3,6 +3,7 @@
 namespace App\Actions\Account;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class CreatePinAction
 {
@@ -13,7 +14,7 @@ class CreatePinAction
         }
 
         return Auth::user()->update([
-            'pin' => encrypt($attribute['pin'])
+            'pin' => Crypt::encrypt($attribute['pin'])
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\States\User\Activated;
 use App\States\User\Active;
 use App\States\User\Deactivated;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Enums\AccountTypeEnum;
@@ -73,18 +74,9 @@ class User extends Authenticatable implements Wallet, Confirmable
         });
     }
 
-    protected static function booted()
-    {
-        static::saving(function (User $user) {
-            if ($user->isDirty('pin')) {
-                $user->pin = md5($user->pin);
-            }
-        });
-    }
-
     public function validatePin(string $pin): bool
     {
-        return $this->pin === md5($pin);
+        return Crypt::decrypt($this->pin) === $pin;
     }
 
     public function hasCreatePin(): bool
