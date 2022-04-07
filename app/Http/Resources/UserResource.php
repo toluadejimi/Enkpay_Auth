@@ -18,9 +18,18 @@ class UserResource extends JsonResource
             'phone_number' => PhoneNumber::make($this->phone, $this->phone_country)
                 ->formatE164(),
             'account_type' => $this->type,
-            'pin_status' => Auth::user()->hasCreatePin() ? 'Created' : null,
+            'pin_status' => $this->pinStatus(),
             'account_number' => $this->account_number,
             'account_balance' => $this->virtual_account_balance,
         ];
+    }
+
+    protected function pinStatus(): ?string
+    {
+        if (Auth::check()) {
+            return Auth::user()->hasCreatePin() ? 'Created' : null;
+        }
+
+        return null;
     }
 }
