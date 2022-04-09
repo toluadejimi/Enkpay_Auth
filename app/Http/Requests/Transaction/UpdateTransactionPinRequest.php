@@ -13,7 +13,7 @@ class UpdateTransactionPinRequest extends FormRequest
         return [
             'phone' => ['required', 'string', 'phone:NG', new CurrentPhoneRule()],
             'old_pin' => ['required', 'string', new CurrentPinRule()],
-            'pin' => ['required', 'string', 'min:6', 'confirmed'],
+            'pin' => ['required', 'string', 'size:4', 'confirmed'],
         ];
     }
 

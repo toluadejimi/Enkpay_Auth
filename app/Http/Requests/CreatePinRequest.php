@@ -19,7 +19,7 @@ class CreatePinRequest extends FormRequest
     {
         return [
             'phone' => ['required', 'string', 'phone:NG', new CurrentPhoneRule()],
-            'pin' => ['required', 'string', 'min:6', 'confirmed'],
+            'pin' => ['required', 'string', 'size:4', 'confirmed'],
         ];
     }
 }
