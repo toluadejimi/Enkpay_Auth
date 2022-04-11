@@ -6,6 +6,7 @@ use App\Enums\AccountTypeEnum;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class AccountTypeCollectionController extends Controller
 {
@@ -20,6 +21,14 @@ class AccountTypeCollectionController extends Controller
                 return $value === 'admin';
             })->all();
 
-        return response()->json($result);
+        return response()->json([
+            "success" => true,
+            "errors" => "",
+            "message" => "",
+            "data" => $result
+        ])->setStatusCode(
+            Response::HTTP_OK,
+            Response::$statusTexts[Response::HTTP_OK]
+        );
     }
 }
