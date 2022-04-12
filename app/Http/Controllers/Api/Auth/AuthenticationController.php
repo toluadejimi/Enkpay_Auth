@@ -23,7 +23,7 @@ class AuthenticationController extends BaseApiController
 
             return response()->json([
                 'success' => true,
-                'errors' => null,
+                'errors' => '',
                 'message' => 'User successfully signed in.',
                 'data' => [
                     'id' => $user->uuid,
@@ -62,7 +62,7 @@ class AuthenticationController extends BaseApiController
 
         return response()->json([
             'success' => true,
-            'errors' => null,
+            'errors' => '',
             'message' => 'Account successfully logout.',
             'data' => null
         ])->setStatusCode(

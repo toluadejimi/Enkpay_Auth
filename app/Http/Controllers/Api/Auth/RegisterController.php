@@ -3,108 +3,20 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\UserResource;
 use App\Actions\Auth\RegisterUserAction;
+use Propaganistas\LaravelPhone\PhoneNumber;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\TokenVerificationRequest;
 use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Requests\User\UserRegistrationRequest;
 use App\Actions\Auth\VerifyRegisteredAccountAction;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
-use Propaganistas\LaravelPhone\PhoneNumber;
-use Symfony\Component\HttpFoundation\Response;
 
 class RegisterController extends BaseApiController
 {
 
     /**
      * @throws CountryCodeException
-     */
-    /**
-     * @OA\Post(
-     *     path="/auth/register",
-     *     summary="Register User",
-     *     tags={"Register"},
-     *    @OA\Parameter(
-     *           name="last_name",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="first_name",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="middle_name",
-     *           in="query",
-     *           required=false,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="phone_country",
-     *           in="query",
-     *           required=false,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="device_id",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="phone",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="account_type",
-     *           in="query",
-     *           required=false,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="password",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="password_confirmation",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Response(
-     *      response=200,
-     *       description="Success",
-     *   ),
-     *   @OA\Response(
-     *      response=422,
-     *      description="Validation error"
-     *   ),
-     * )
      */
     public function register(UserRegistrationRequest $request): JsonResponse
     {
@@ -113,7 +25,7 @@ class RegisterController extends BaseApiController
         if ($user->exists) {
             response()->json([
                 'success' => true,
-                'errors' => null,
+                'errors' => '',
                 'message' => 'User created successfully.',
                 'data' => [
                     'id' => $user->uuid,
@@ -136,9 +48,9 @@ class RegisterController extends BaseApiController
         }
 
         return response()->json([
-            'success' => true,
-            'errors' => true,
-            'message' => 'Unable to create user, please try again.',
+            'success' => false,
+            'errors' => 'Unable to create an account.',
+            'message' => 'Account registration was not successful, please try again.',
             'data' => []
         ])->setStatusCode(
             Response::HTTP_OK,
@@ -155,7 +67,7 @@ class RegisterController extends BaseApiController
         if ($state) {
             return response()->json([
                 'success' => true,
-                'errors' => null,
+                'errors' => '',
                 'message' => 'Account successfully verified.',
                 'data' => []
             ])->setStatusCode(
@@ -165,9 +77,9 @@ class RegisterController extends BaseApiController
         }
 
         return response()->json([
-            'success' => true,
-            'errors' => true,
-            'message' => 'Unable to verify account',
+            'success' => false,
+            'errors' => 'Unable to verify account',
+            'message' => 'Your account could not be verify, please check your verification token.',
             'data' => []
         ])->setStatusCode(
             Response::HTTP_OK,
