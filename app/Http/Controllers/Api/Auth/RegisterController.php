@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Requests\User\UserRegistrationRequest;
 use App\Actions\Auth\VerifyRegisteredAccountAction;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
+use Propaganistas\LaravelPhone\PhoneNumber;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisterController extends BaseApiController
 {
@@ -108,53 +110,68 @@ class RegisterController extends BaseApiController
     {
         $user = RegisterUserAction::execute($request->validated());
 
-        $success['token_type'] = "Bearer";
-        $success['token'] =  $user->createToken('ENKPAY_AUTH')->plainTextToken;
-        $success = collect($success)->merge(new UserResource($user));
+        if ($user->exists) {
+            response()->json([
+                'success' => true,
+                'errors' => null,
+                'message' => 'User created successfully.',
+                'data' => [
+                    'id' => $user->uuid,
+                    'name' => $user->full_name,
+                    'phone_number' => PhoneNumber::make(
+                        $user->phone,
+                        $user->phone_country
+                    )->formatE164(),
+                    'account_type' => $user->type,
+                    'pin_status' => $user->pin_status,
+                    'account_number' => $user->account_number,
+                    'account_balance' => $user->virtual_account_balance,
+                    'token_type' => 'Bearer',
+                    'token' => $user->createToken('ENKPAY_AUTH')->plainTextToken
+                ]
+            ])->setStatusCode(
+                Response::HTTP_CREATED,
+                Response::$statusTexts[Response::HTTP_CREATED]
+            );
+        }
 
-        return $this->sendResponse($success->toArray(), 'User created successfully.', 201);
+        return response()->json([
+            'success' => true,
+            'errors' => true,
+            'message' => 'Unable to create user, please try again.',
+            'data' => []
+        ])->setStatusCode(
+            Response::HTTP_OK,
+            Response::$statusTexts[Response::HTTP_OK]
+        );
     }
 
-
-    /**
-     * @OA\Post(
-     *     path="/auth/register/verify",
-     *     summary="Verify a register User",
-     *     tags={"Verify"},
-     *    @OA\Parameter(
-     *           name="token",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Parameter(
-     *           name="identifier",
-     *           in="query",
-     *           required=true,
-     *           @OA\Schema(
-     *                 type="string"
-     *           )
-     *     ),
-     *    @OA\Response(
-     *      response=200,
-     *       description="Success",
-     *   ),
-     *   @OA\Response(
-     *      response=422,
-     *      description="Validation error"
-     *   ),
-     * )
-     */
     public function verify(TokenVerificationRequest $request): JsonResponse
     {
         $state = VerifyRegisteredAccountAction::execute(
             $request->toArray()
         );
 
-        return $state
-            ? $this->sendResponse([], 'Account successfully verified.')
-            : $this->sendError('Unable to verify account');
+        if ($state) {
+            return response()->json([
+                'success' => true,
+                'errors' => null,
+                'message' => 'Account successfully verified.',
+                'data' => []
+            ])->setStatusCode(
+                Response::HTTP_OK,
+                Response::$statusTexts[Response::HTTP_OK]
+            );
+        }
+
+        return response()->json([
+            'success' => true,
+            'errors' => true,
+            'message' => 'Unable to verify account',
+            'data' => []
+        ])->setStatusCode(
+            Response::HTTP_OK,
+            Response::$statusTexts[Response::HTTP_OK]
+        );
     }
 }
