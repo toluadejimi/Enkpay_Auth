@@ -23,8 +23,8 @@ class AccountTypeCollectionController extends Controller
 
         return response()->json([
             "success" => true,
-            "errors" => "",
-            "message" => "",
+            "errors" => null,
+            "message" => "List of account type",
             "data" => $result
         ])->setStatusCode(
             Response::HTTP_OK,

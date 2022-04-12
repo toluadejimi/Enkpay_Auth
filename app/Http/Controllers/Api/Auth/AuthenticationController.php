@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\LoginRequest;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use Propaganistas\LaravelPhone\PhoneNumber;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Api\BaseApiController;
 use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
 
@@ -20,21 +20,54 @@ class AuthenticationController extends BaseApiController
 
         if ($state) {
             $user = Auth::user();
-            $success['token_type'] = 'Bearer';
-            $success['token'] =  $user->createToken('ENKPAY_AUTH')->plainTextToken;
-            $success = collect($success)->merge(new UserResource($user));
 
-
-            return $this->sendResponse($success->toArray(), 'User signed in');
+            return response()->json([
+                'success' => true,
+                'errors' => null,
+                'message' => 'User successfully signed in.',
+                'data' => [
+                    'id' => $user->uuid,
+                    'name' => $user->full_name,
+                    'phone_number' => PhoneNumber::make(
+                        $user->phone,
+                        $user->phone_country
+                    )->formatE164(),
+                    'account_type' => $user->type,
+                    'pin_status' => $user->pin_status,
+                    'account_number' => $user->account_number,
+                    'account_balance' => $user->virtual_account_balance,
+                    'token_type' => 'Bearer',
+                    'token' => $user->createToken('ENKPAY_AUTH')->plainTextToken
+                ]
+            ])->setStatusCode(
+                Response::HTTP_OK,
+                Response::$statusTexts[Response::HTTP_OK]
+            );
         }
 
-        return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        return response()->json([
+            'success' => true,
+            'errors' => 'Unauthorised access',
+            'message' => 'Credentials provided, do not match our existing records.',
+            'data' => null
+        ])->setStatusCode(
+            Response::HTTP_UNAUTHORIZED,
+            Response::$statusTexts[Response::HTTP_UNAUTHORIZED]
+        );
     }
 
-    public function logout(Request $request): Response
+    public function logout(Request $request)
     {
         Auth::user()->tokens()->delete();
 
-        return response()->noContent();
+        return response()->json([
+            'success' => true,
+            'errors' => null,
+            'message' => 'Account successfully logout.',
+            'data' => null
+        ])->setStatusCode(
+            Response::HTTP_NO_CONTENT,
+            Response::$statusTexts[Response::HTTP_NO_CONTENT]
+        );
     }
 }

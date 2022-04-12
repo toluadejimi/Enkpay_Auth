@@ -107,6 +107,11 @@ class User extends Authenticatable implements Wallet, Confirmable
         return "{$this->last_name} {$this->first_name} {$this->middle_name}";
     }
 
+    public function getPinStatusAttribute(): ?string
+    {
+        return $this->hasCreatePin() ? 'Created' : null;
+    }
+
     public function phoneIsVerified(): bool
     {
         return !is_null($this->phone_verified_at);

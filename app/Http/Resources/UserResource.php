@@ -23,13 +23,4 @@ class UserResource extends JsonResource
             'account_balance' => $this->virtual_account_balance,
         ];
     }
-
-    protected function pinStatus(): ?string
-    {
-        if (Auth::check()) {
-            return Auth::user()->hasCreatePin() ? 'Created' : null;
-        }
-
-        return null;
-    }
 }
