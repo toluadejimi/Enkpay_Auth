@@ -8,12 +8,23 @@ use Illuminate\Http\Client\RequestException;
 
 class GetBanksController
 {
-    /** @throws RequestException */
     public function __invoke()
     {
-        $banks = GetBanksAction::execute(Auth::user());
+        try {
+            $banks = GetBanksAction::execute(Auth::user());
+        }catch (\Exception $exception){
+            return response()->json([
+                'success' => false,
+                'errors' => true,
+                'message' => 'Unable to get bank data.',
+                'data' => []
+            ]);
+        }
 
         return response()->json([
+            'success' => true,
+            'errors' => '',
+            'message' => 'List of banks',
             'data' => $banks
         ]);
     }
