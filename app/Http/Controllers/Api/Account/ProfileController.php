@@ -11,7 +11,11 @@ class ProfileController extends Controller
 {
     public function __invoke()
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
+        }catch (\Exception $exception) {
+            return "hello";
+        }
 
         return response()->json([
             'success' => true,

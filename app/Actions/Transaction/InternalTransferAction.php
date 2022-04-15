@@ -16,7 +16,7 @@ class InternalTransferAction
      * @throws CountryCodeException
      */
     public static function execute(array $attributes): Collection
-    {
+    {//destination_name
         if (! Auth::user()->canTransfer($attributes['amount'])) {
             return self::response("Insufficient fund", false);
         }
@@ -26,7 +26,7 @@ class InternalTransferAction
         }
 
         self::makeTransfer(
-            $attributes['recipient'],
+            $attributes['phone_number'],
             $attributes['amount']
         );
 

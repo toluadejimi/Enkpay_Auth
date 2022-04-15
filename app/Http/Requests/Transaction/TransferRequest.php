@@ -10,7 +10,8 @@ class TransferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'recipients' => ['required', 'string', new RecipientExistsRule()],
+            'phone_number' => ['required', 'string', new RecipientExistsRule()],
+            'destination_name' => ['required', 'string', 'max:255'],
             'amount'     => ['required', 'string'],
             'description' => ['sometimes','required', 'string', 'max:255']
         ];
