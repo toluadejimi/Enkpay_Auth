@@ -9,8 +9,10 @@ class DebitRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'uuid' => ['required', 'string', 'exists:users,uuid'],
+            'transaction_type' => ['required','string'],
             'amount' => ['required', 'string'],
-            'description' => ['required', 'string', 'max:255']
+            'description' => ['sometimes', 'required', 'string', 'max:255']
         ];
     }
 
