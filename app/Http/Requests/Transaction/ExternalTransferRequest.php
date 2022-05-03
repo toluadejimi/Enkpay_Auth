@@ -4,7 +4,7 @@ namespace App\Http\Requests\Transaction;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExternalTranferRequest extends FormRequest
+class ExternalTransferRequest extends FormRequest
 {
     public function rules(): array
     {

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api\Transaction;
 
-use App\Actions\Transaction\ExternalTransferAction;
-use App\Http\Requests\Transaction\ExternalTranferRequest;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Client\RequestException;
+use App\Actions\Transaction\ExternalTransferAction;
+use App\Http\Requests\Transaction\ExternalTransferRequest;
 
 class ExternalTransferController
 {
     /**
      * @throws RequestException
      */
-    public function __invoke(ExternalTranferRequest $request)
+    public function __invoke(ExternalTransferRequest $request)
     {
         $response = ExternalTransferAction::execute(
             Auth::user(),
