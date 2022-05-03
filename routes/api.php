@@ -94,7 +94,8 @@ Route::middleware('auth:sanctum')
                                     ->name('account.transaction.wallet.debit');
                                 Route::post('/transfer', [TransactionTransferController::class, '__invoke'])
                                     ->name('account.transaction.wallet.transfer');
-                                Route::post('bank/transfer', )->name('');
+                                /*Route::post('bank/transfer', [])
+                                    ->name('account.transaction.wallet.bank-transfer');*/
                             }
                         );
                         Route::post('/bank/transfer', [ExternalTransferController::class, '__invoke'])
