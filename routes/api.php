@@ -1,6 +1,7 @@
 <?php
 /** API Routes */
 
+use App\Http\Controllers\Api\Transaction\WalletBalanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\UserIndexApiController;
@@ -88,6 +89,8 @@ Route::middleware('auth:sanctum')
                             ->name('account.transaction.history');
                         Route::prefix('wallet')
                             ->group(function () {
+                                Route::post('/balance', WalletBalanceController::class)
+                                    ->name('account.transaction.wallet.balance');
                                 Route::post('/credit', [TransactionController::class, 'credit'])
                                     ->name('account.transaction.wallet.credit');
                                 Route::post('/debit', [TransactionController::class, 'debit'])
