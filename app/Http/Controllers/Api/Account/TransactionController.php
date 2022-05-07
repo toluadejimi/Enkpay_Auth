@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\Account;
 
+use App\Actions\Transaction\UserCreditAction;
+use App\Http\Requests\Transaction\CreditRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Actions\Transaction\UserDebitAction;
@@ -18,9 +20,32 @@ class TransactionController extends BaseApiController
         $this->user = Auth::user();
     }
 
-    public function credit()
+    public function credit(CreditRequest $request)
     {
-        //$this->user->credit($amount);
+        $status = UserCreditAction::execute($request->validated());
+
+
+        if ($status) {
+            return response()->json([
+                'success' => true,
+                'errors' => '',
+                'message' => 'Account was successfully credited.',
+                'data' => []
+            ])->setStatusCode(
+                Response::HTTP_OK,
+                Response::$statusTexts[Response::HTTP_OK]
+            );
+        }
+
+        return response()->json([
+            'success' => false,
+            'errors' => 'Failed to credit account.',
+            'message' => 'Unable to credit account',
+            'data' => []
+        ])->setStatusCode(
+            Response::HTTP_OK,
+            Response::$statusTexts[Response::HTTP_OK]
+        );
     }
 
     public function debit(DebitRequest $request)
