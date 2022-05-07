@@ -14,13 +14,20 @@ class UserDebitAction
         self::$user = Auth::user();
     }
 
-    public static function execute(array $attributes)
+    public static function execute(array $attributes): bool
     {
+        if (self::$user->canTransfer($attributes['amount'])) {
+            return false;
+        }
+
         self::$user->debit(
             $attributes['amount'],
             [
+                'transaction_type' => $attributes['transaction_type'],
                 'description' => $attributes['description']
             ]
         );
+
+        return true;
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Actions\Transaction\UserDebitAction;
 use App\Http\Requests\Transaction\DebitRequest;
 use App\Http\Controllers\Api\BaseApiController;
+use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends BaseApiController
 {
@@ -24,13 +25,43 @@ class TransactionController extends BaseApiController
 
     public function debit(DebitRequest $request)
     {
-        UserDebitAction::execute($request->validated());
+        $status = UserDebitAction::execute($request->validated());
 
-        //
+        if ($status) {
+            return response()->json([
+                'success' => true,
+                'errors' => '',
+                'message' => 'Account was successfully debited.',
+                'data' => []
+            ])->setStatusCode(
+                Response::HTTP_OK,
+                Response::$statusTexts[Response::HTTP_OK]
+            );
+        }
+
+        return response()->json([
+            'success' => false,
+            'errors' => 'Failed to debit account.',
+            'message' => 'Unable to debit account, due to insufficient funds.',
+            'data' => []
+        ])->setStatusCode(
+            Response::HTTP_OK,
+            Response::$statusTexts[Response::HTTP_OK]
+        );
     }
 
     public function history()
     {
+        $transactions = Auth::user()->transactions();
 
+        return response()->json([
+            'success' => true,
+            'errors' => '',
+            'message' => 'Transaction history.',
+            'data' => collect($transactions)
+        ])->setStatusCode(
+            Response::HTTP_OK,
+            Response::$statusTexts[Response::HTTP_OK]
+        );
     }
 }
