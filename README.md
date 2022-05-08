@@ -9,3 +9,5 @@
 ### Diagrams
 
 ![Registration flow](./resources/diagram/enk_pay_registration.png)
+
+Webhook url: https://{domain}/payment/webhook [method: post]

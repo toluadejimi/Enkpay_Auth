@@ -1,6 +1,7 @@
 <?php
 /** API Routes */
 
+use App\Http\Controllers\Api\Transaction\TransactionWebhookController;
 use App\Http\Controllers\Api\Transaction\WalletBalanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
@@ -60,6 +61,10 @@ Route::prefix('auth')
             ->name('account.logout');
     }
 );
+
+/** Webhook route */
+Route::post('/payment/webhook', TransactionWebhookController::class)
+    ->name('payment.webhook');
 
 Route::middleware('auth:sanctum')
     ->prefix('account')
