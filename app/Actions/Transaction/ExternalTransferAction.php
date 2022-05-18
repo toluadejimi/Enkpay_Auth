@@ -52,10 +52,9 @@ class ExternalTransferAction
                 ]
             ])->throw()->json();
 
-       if ($response['status'] === 'Successful') {
+        if ($response['status'] === 'Successful') {
             activity()->log("{$response['status']}:{$response['message']}");
-            $responseCollection = collect($response['data']['provider_response']);
-            return $responseCollection->destination_institution_code;
+            return collect($response['data']['provider_response']);
         }
 
         activity()->log("{$response['status']}:{$response['data']['error']['message']}");
@@ -64,17 +63,3 @@ class ExternalTransferAction
 
     }
 }
-
-/*'provider_response': {
-    'destination_institution_code': '076',
-      'beneficiary_account_name': 'JAMES BLUE',
-      'beneficiary_account_number': '0099880099',
-      'beneficiary_kyc_level': '',
-      'originator_account_name': '',
-      'originator_account_number': '1100009909',
-      'originator_kyc_level': '',
-      'narration': 'A random transaction',
-      'transaction_final_amount': 1000,
-      'reference': 'C3DA541CA20740659031949CD3441EBE',
-      'payment_id': '382FTTP2005901LD'
-    },*/

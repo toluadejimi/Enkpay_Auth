@@ -102,6 +102,7 @@ Route::middleware('auth:sanctum')
                                     ->name('account.transaction.wallet.debit');
                                 Route::post('/transfer', [TransactionTransferController::class, '__invoke'])
                                     ->name('account.transaction.wallet.transfer');
+                                Route::post('/verify-user', [TransactionTransferController::class, 'verifyUser'])->name('account.transaction.wallet.verify');
                                 /*Route::post('bank/transfer', [])
                                     ->name('account.transaction.wallet.bank-transfer');*/
                             }

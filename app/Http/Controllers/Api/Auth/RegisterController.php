@@ -14,7 +14,6 @@ use Propaganistas\LaravelPhone\Exceptions\CountryCodeException;
 
 class RegisterController extends BaseApiController
 {
-
     /**
      * @throws CountryCodeException
      */
@@ -23,7 +22,15 @@ class RegisterController extends BaseApiController
         $user = RegisterUserAction::execute($request->validated());
 
         if ($user->exists) {
-            response()->json([
+            $user->createWallet([
+                'name' => 'Naira Wallet',
+                'slug' => 'naira_wallet',
+            ]);
+            $user->createWallet([
+                'name' => 'other Wallet',
+                'slug' => 'other_wallet',
+            ]);
+            return response()->json([
                 'success' => true,
                 'errors' => '',
                 'message' => 'User created successfully.',
@@ -34,6 +41,8 @@ class RegisterController extends BaseApiController
                         $user->phone,
                         $user->phone_country
                     )->formatE164(),
+                    'default_wallet' => $user->getWallet('naira_wallet'),
+                    'other_wallet' => $user->getWallet('other_wallet'),
                     'account_type' => $user->type,
                     'pin_status' => $user->pin_status,
                     'account_number' => $user->account_number,
