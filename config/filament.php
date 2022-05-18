@@ -3,13 +3,12 @@
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use App\Filament\Pages\Account\AccountDashboard;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\MirrorConfigToSubpackages;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
 return [
@@ -24,21 +23,7 @@ return [
     |
     */
 
-    'path' => env('FILAMENT_PATH', 'management'),
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Filament Core Path
-    |--------------------------------------------------------------------------
-    |
-    | This is the path which Filament will use to load its core routes and assets.
-    | You may change it if it conflicts with your other routes.
-    |
-    */
-
-    'core_path' => env('FILAMENT_CORE_PATH', 'filament'),
-
+    'path' => env('FILAMENT_PATH', 'management/administrator'),
 
     /*
     |--------------------------------------------------------------------------
@@ -105,9 +90,7 @@ return [
     'pages' => [
         'namespace' => 'App\\Filament\\Pages',
         'path' => app_path('Filament/Pages'),
-        'register' => [
-            //AccountDashboard::class,
-        ],
+        'register' => [],
     ],
 
     /*
@@ -174,7 +157,7 @@ return [
     | Layout
     |--------------------------------------------------------------------------
     |
-    | This is the configuration for the general layout of the admin panel.
+    | This is the configuration for the general appearance of the admin panel.
     |
     | You may configure the max content width from `xl` to `7xl`, or `full`
     | for no max width.
@@ -186,36 +169,24 @@ return [
             'actions' => [
                 'alignment' => 'left',
             ],
-            'have_inline_labels' => false,
         ],
-        'footer' => [
-            'should_show_logo' => false,
-        ],
-        'max_content_width' => null,
         'notifications' => [
             'vertical_alignment' => 'top',
             'alignment' => 'center',
         ],
         'sidebar' => [
-            'is_collapsible_on_desktop' => false,
+            'is_collapsible_on_desktop' => true,
         ],
+        'footer' => [
+            'should_show_logo' => false,
+        ],
+        'max_content_width' => 'full',
         'tables' => [
             'actions' => [
                 'type' => \Filament\Tables\Actions\LinkAction::class,
             ],
         ],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Favicon
-    |--------------------------------------------------------------------------
-    |
-    | This is the path to the favicon used for pages in the admin panel.
-    |
-    */
-
-    'favicon' => null,
 
     /*
     |--------------------------------------------------------------------------

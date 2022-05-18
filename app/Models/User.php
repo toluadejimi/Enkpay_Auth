@@ -5,6 +5,9 @@ namespace App\Models;
 use App\States\User\Activated;
 use App\States\User\Active;
 use App\States\User\Deactivated;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -30,7 +33,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 
-class User extends Authenticatable implements Wallet, Confirmable
+class User extends Authenticatable implements Confirmable, FilamentUser, HasAvatar, HasName, Wallet
 {
     use HasStates;
     use HasWallet;
@@ -210,5 +213,20 @@ class User extends Authenticatable implements Wallet, Confirmable
     {
         $this->suspended_state->transition(Deactivated::class);
 
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->full_name;
+    }
+
+    public function canAccessFilament(): bool
+    {
+        return true; //$this->isAdmin();
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return ''; //$this->avatar_url;
     }
 }
