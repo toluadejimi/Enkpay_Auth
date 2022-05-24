@@ -46,7 +46,7 @@ class AuthenticationController extends BaseApiController
         }
 
         return response()->json([
-            'success' => true,
+            'success' => false,
             'errors' => 'Unauthorised access',
             'message' => 'Credentials provided, do not match our existing records.',
             'data' => null
