@@ -1,8 +1,6 @@
 <?php
 /** API Routes */
 
-use App\Http\Controllers\Api\Transaction\TransactionWebhookController;
-use App\Http\Controllers\Api\Transaction\WalletBalanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\UserIndexApiController;
@@ -16,9 +14,12 @@ use App\Http\Controllers\Api\Auth\AuthenticationController;
 use App\Http\Controllers\Api\Transaction\GetBanksController;
 use App\Http\Controllers\Api\NewVerificationTokenController;
 use App\Http\Controllers\Api\SendPhoneVerificationController;
+use App\Http\Controllers\Api\SettingsConfigurationController;
 use App\Http\Controllers\Api\Account\ChangePasswordController;
+use App\Http\Controllers\Api\Transaction\WalletBalanceController;
 use App\Http\Controllers\Api\Auth\AccountTypeCollectionController;
 use App\Http\Controllers\Api\Transaction\ExternalTransferController;
+use App\Http\Controllers\Api\Transaction\TransactionWebhookController;
 use App\Http\Controllers\Api\Transaction\TransactionTransferController;
 use App\Http\Controllers\Api\Transaction\UpdateTransactionPinController;
 use App\Http\Controllers\Api\Account\ActivateAndDeactivateAccountController;
@@ -65,6 +66,10 @@ Route::prefix('auth')
 /** Webhook route */
 Route::post('/payment/webhook', TransactionWebhookController::class)
     ->name('payment.webhook');
+
+/** Configuration route */
+Route::get('/settings/configuration', SettingsConfigurationController::class)
+    ->name('settings.configuration');
 
 Route::middleware('auth:sanctum')
     ->prefix('account')
