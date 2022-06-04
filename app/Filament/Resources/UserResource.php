@@ -3,16 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
-use App\Filament\Resources\UserResource\Pages;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers\PosRelationManager;
 
 class UserResource extends Resource
 {
@@ -115,7 +116,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PosRelationManager::class,
         ];
     }
 

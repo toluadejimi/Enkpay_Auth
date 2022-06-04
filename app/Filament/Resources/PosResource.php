@@ -2,22 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\DeviceStatusEnum;
-use App\Enums\DeviceTypeEnum;
 use App\Models\Pos;
-use Filament\Forms\Components\BelongsToSelect;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
+use App\Enums\DeviceTypeEnum;
 use Filament\Resources\Table;
+use App\Enums\DeviceStatusEnum;
 use Filament\Resources\Resource;
-use App\Filament\Resources\PosResource\Pages;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\Grid;
 use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
-use function Pest\Laravel\options;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Placeholder;
+use App\Filament\Resources\PosResource\Pages;
+use Filament\Forms\Components\BelongsToSelect;
 
 class PosResource extends Resource
 {
@@ -36,54 +36,13 @@ class PosResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Grid::make(4)
-                    ->schema([
-                        BelongsToSelect::make('user_id')
-                            ->label(__('ASSIGN TO A USER:'))
-                            ->searchable()
-                            ->placeholder(__('Select user to assign to:'))
-                            ->relationship('user', 'email')
-                            ->required()
-                            ->columnSpan(2),
-                        TextInput::make('device_id')
-                            ->label(__('DEVICE ID'))
-                            ->placeholder(__('DEVICE ID'))
-                            ->columnSpan(4),
-                        Select::make('device_type')
-                            ->label(__('DEVICE TYPE'))
-                            ->options(DeviceTypeEnum::toArray())
-                            ->required()
-                            ->placeholder(__('Select device type'))
-                            ->columnSpan(2),
-                        Select::make('status')
-                            ->label(__('STATUS'))
-                            ->options(DeviceStatusEnum::toArray())
-                            ->required()
-                            ->placeholder(__('Select status'))
-                            ->columnSpan(2),
-                    ])
-            ]);
+            ->schema(static::getFormSchema());
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([
-                TextColumn::make('user.email')
-                    ->searchable()
-                    ->sortable()
-                    ->label(__('USER')),
-                TextColumn::make('device_id')
-                    ->label(__('DEVICE ID')),
-                TextColumn::make('device_type')
-                    ->label(__('DEVICE TYPE')),
-                TextColumn::make('status')
-                    ->label(__('STATUS')),
-                TextColumn::make('created_at')
-                    ->label(__('Created Date'))
-                    ->date()
-            ])
+            ->columns(static::getTableColumns())
             ->filters([
                 Filter::make('published_at')
                     ->form([
@@ -110,6 +69,61 @@ class PosResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getFormSchema(): array
+    {
+        return [
+            Grid::make(4)
+                ->schema([
+                    BelongsToSelect::make('user_id')
+                        ->label(__('ASSIGN TO A USER:'))
+                        ->searchable()
+                        ->placeholder(__('Select user to assign to:'))
+                        ->relationship('user', 'email')
+                        ->required()
+                        ->columnSpan(2),
+                    Placeholder::make('updated_at')
+                        ->label('Last modified at')
+                        ->content(fn (?Pos $record): string => $record ? $record->updated_at->diffForHumans() : '-')
+                        ->columnSpan(2),
+                    TextInput::make('device_id')
+                        ->label(__('DEVICE ID'))
+                        ->placeholder(__('DEVICE ID'))
+                        ->columnSpan(4),
+                    Select::make('device_type')
+                        ->label(__('DEVICE TYPE'))
+                        ->options(DeviceTypeEnum::toArray())
+                        ->required()
+                        ->placeholder(__('Select device type'))
+                        ->columnSpan(2),
+                    Select::make('status')
+                        ->label(__('STATUS'))
+                        ->options(DeviceStatusEnum::toArray())
+                        ->required()
+                        ->placeholder(__('Select status'))
+                        ->columnSpan(2),
+                ])
+        ];
+    }
+
+    public static function getTableColumns(): array
+    {
+        return [
+            TextColumn::make('user.email')
+                ->searchable()
+                ->sortable()
+                ->label(__('USER')),
+            TextColumn::make('device_id')
+                ->label(__('DEVICE ID')),
+            TextColumn::make('device_type')
+                ->label(__('DEVICE TYPE')),
+            TextColumn::make('status')
+                ->label(__('STATUS')),
+            TextColumn::make('created_at')
+                ->label(__('Created Date'))
+                ->date()
         ];
     }
 

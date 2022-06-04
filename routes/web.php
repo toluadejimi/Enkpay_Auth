@@ -8,4 +8,4 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', LandingPageController::class);
 Route::redirect('/', '/login');
 
-Route::get('/login', Login::class);
+Route::get('/login', Login::class)->name('login');
