@@ -104,6 +104,37 @@ CREATE TABLE `phone_verification_tokens` (
   KEY `phone_verification_tokens_phone_index` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `pos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `device_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `device_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pos_user_id_foreign` (`user_id`),
+  CONSTRAINT `pos_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `settings` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `group` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `locked` tinyint(1) NOT NULL,
+  `payload` json NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `settings_group_index` (`group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -244,3 +275,6 @@ INSERT INTO `migrations` VALUES (15,'2021_11_02_202021_update_wallets_uuid_table
 INSERT INTO `migrations` VALUES (16,'2022_03_21_112422_add_suspended_state_column_to_users_table',3);
 INSERT INTO `migrations` VALUES (17,'2022_03_31_090400_update_pin_column_on_users_table',4);
 INSERT INTO `migrations` VALUES (18,'2022_04_05_050914_create_pin_blind_index_column_on_users_table',5);
+INSERT INTO `migrations` VALUES (19,'2022_05_18_183607_create_settings_table',6);
+INSERT INTO `migrations` VALUES (20,'2022_05_18_184104_create_application_settings',6);
+INSERT INTO `migrations` VALUES (21,'2022_06_03_111454_create_pos_table',6);
