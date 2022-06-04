@@ -2,8 +2,8 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Widgets\Dashboard\RecentTransactions;
 use Filament\Pages\Page;
+use App\Filament\Widgets\Dashboard\RecentTransactions;
 use App\Filament\Widgets\Dashboard\UsersOverviewWidget;
 
 class Dashboard extends Page

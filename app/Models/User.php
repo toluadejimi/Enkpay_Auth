@@ -8,6 +8,7 @@ use App\States\User\Deactivated;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -33,7 +34,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 
-class User extends Authenticatable implements Confirmable, FilamentUser, HasAvatar, HasName, Wallet
+class User extends Authenticatable implements Confirmable, FilamentUser, HasName, Wallet
 {
     use HasStates;
     use HasWallet;
@@ -225,8 +226,8 @@ class User extends Authenticatable implements Confirmable, FilamentUser, HasAvat
         return true; //$this->isAdmin();
     }
 
-    public function getFilamentAvatarUrl(): ?string
+    public function allPos(): HasMany
     {
-        return ''; //$this->avatar_url;
+        return $this->hasMany(Pos::class, 'user_id');
     }
 }

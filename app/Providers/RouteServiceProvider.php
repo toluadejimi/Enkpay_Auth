@@ -47,7 +47,7 @@ class RouteServiceProvider extends ServiceProvider
 
     public static function HOME(): string
     {
-        return config('filament.path');
+        return config('filament.path').'/dashboard';
     }
 
     /** Configure the rate limiters for the application. */

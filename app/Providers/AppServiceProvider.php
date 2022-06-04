@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Faker\Generator;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
@@ -11,7 +12,13 @@ class AppServiceProvider extends ServiceProvider
     /** Register any application services. */
     public function register(): void
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->app->extend(
+                Generator::class,
+                fn(Generator $generator) => tap($generator)
+                    ->seed('5000')
+            );
+        }
     }
 
     /** Bootstrap any application services. */

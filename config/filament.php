@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'path' => env('FILAMENT_PATH', 'management/administrator'),
+    'path' => env('FILAMENT_PATH', 'management'),
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +90,9 @@ return [
     'pages' => [
         'namespace' => 'App\\Filament\\Pages',
         'path' => app_path('Filament/Pages'),
-        'register' => [],
+        'register' => [
+            \App\Filament\Pages\Dashboard::class,
+        ],
     ],
 
     /*
