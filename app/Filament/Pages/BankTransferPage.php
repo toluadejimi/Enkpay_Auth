@@ -8,6 +8,8 @@ class BankTransferPage extends Page
 {
     protected static ?int $navigationSort = 5;
 
+    protected static ?string $navigationGroup = 'Transaction';
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.bank-transfer-page';

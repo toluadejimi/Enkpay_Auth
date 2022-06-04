@@ -2,17 +2,19 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\TextInput;
 use Filament\Pages\SettingsPage;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Placeholder;
 use App\Models\Settings\ApplicationSettings;
 
 class ManageApplication extends SettingsPage
 {
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 20;
+
+    protected static ?string $navigationGroup = 'Settings';
 
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 

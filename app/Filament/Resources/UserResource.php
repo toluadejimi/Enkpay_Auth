@@ -3,6 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Models\User;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
@@ -24,26 +28,50 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                TextColumn::make('last_name')->label('Name'),
-
-                /*'last_name'
-                'first_name'
-                'middle_name'
-                'phone'
-                'phone_country'
-                'date_of_birth'
-                'gender'
-                'account_number'
-                'email'
-                'phone_verified_at'
-                'email_verified_at'
-                'type'
-                'address_line_1'
-                'city'
-                'state'
-                'country'
-                'status'*/
-
+                Grid::make(4)
+                    ->schema([
+                        Grid::make(6)->schema([
+                            TextInput::make('first_name')
+                                ->label(__('First Name'))
+                                ->columnSpan(2),
+                            TextInput::make('middle_name')
+                                ->label(__('Middle Name'))
+                                ->columnSpan(2),
+                            TextInput::make('last_name')
+                                ->label(__('Last Name'))
+                                ->columnSpan(2),
+                        ])->columnSpan(4),
+                        TextInput::make('email')
+                            ->label(__('Email address'))
+                            ->columnSpan(4),
+                        Grid::make(4)
+                            ->schema([
+                                DatePicker::make('date_of_birth')
+                                    ->label(__('Date of birth'))
+                                    ->columnSpan(2),
+                                Select::make('gender')
+                                    ->label(__('Gender'))
+                                    ->columnSpan(2)
+                        ])->columnSpan(4),
+                        TextInput::make('address_line_1')
+                            ->label(__('Address'))
+                            ->columnSpan(4),
+                        Grid::make(7)
+                            ->schema([
+                                    TextInput::make('city')
+                                        ->label(__('City'))
+                                        ->columnSpan(3),
+                                    TextInput::make('state')
+                                        ->label(__('State'))
+                                        ->columnSpan(2),
+                                    TextInput::make('Country')
+                                        ->label(__('Country'))
+                                        ->columnSpan(2),
+                            ]
+                        )
+                    ]
+                ),
+                // 'phone', 'phone_country', 'account_number', 'type', 'status'
             ]);
     }
 
@@ -51,14 +79,32 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-
+                TextColumn::make('full_name')
+                    ->label(__('Name'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('email')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('account_number')
+                    ->label(__('Account number'))
+                    ->sortable(),
+                TextColumn::make('gender')
+                    ->label(__('Gender'))
+                    ->sortable(),
+                /*TextColumn::make('type')
+                    ->label(__('Account type'))
+                    ->sortable(),
+                TextColumn::make('status')
+                    ->label(__('Account status'))
+                    ->sortable(),*/
             ])
             ->filters([
                 //
             ])
             ->prependActions([
                 Action::make('verify')
-                    ->tooltip(fn (User $record): string => "Verify User {$record->first_name}" )
+                    ->tooltip(fn (User $record): string => "Verify {$record->full_name}" )
                     ->action(fn (User $record) => $record->verifyAccount())
                     ->requiresConfirmation()
                     ->icon('heroicon-o-check')

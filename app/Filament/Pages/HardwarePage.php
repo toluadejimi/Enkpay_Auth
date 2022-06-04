@@ -8,6 +8,8 @@ class HardwarePage extends Page
 {
     protected static ?int $navigationSort = 2;
 
+    protected static ?string $navigationGroup = 'Device';
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.hardware-page';
