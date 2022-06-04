@@ -223,7 +223,7 @@ class User extends Authenticatable implements Confirmable, FilamentUser, HasName
 
     public function canAccessFilament(): bool
     {
-        return true; //$this->isAdmin();
+        return $this->hasPermissionTo('manage:administration');
     }
 
     public function allPos(): HasMany
