@@ -33,9 +33,11 @@ use App\Notifications\VerificationNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements Confirmable, FilamentUser, HasName, Wallet
 {
+    use HasRoles;
     use HasStates;
     use HasWallet;
     //use HasWallets;
