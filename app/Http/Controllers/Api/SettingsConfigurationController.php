@@ -25,10 +25,34 @@ class SettingsConfigurationController extends Controller
                 'flight'                => $settings->flight,
                 'billsCommission'       => $settings->bills_commission,
                 'transferCommission'    => $settings->transfer_commission,
-            ]
+            ],
+            'customer_charges' => [
+                'pos' => $settings->customer_charges_commission_pos,
+                'transfer' => $settings->customer_charges_commission_transfer,
+                'payBills' => $settings->customer_charges_commission_pay_bills,
+                'buyAirtime' => $settings->customer_charges_commission_buy_airtime,
+                'insurance' => $settings->customer_charges_commission_insurance,
+                'examCard' => $settings->customer_charges_commission_exam_card,
+                'buyTicket' => $settings->customer_charges_commission_buy_ticket,
+                'exchange' => $settings->customer_charges_commission_exchange,
+                'data' => $settings->customer_charges_commission_data,
+                'flight' => $settings->customer_charges_commission_flight,
+            ],
+            'agent_charges' => [
+                'pos' => $settings->agent_charges_commission_pos,
+                'transfer' => $settings->agent_charges_commission_transfer,
+                'payBills' => $settings->agent_charges_commission_pay_bills,
+                'buyAirtime' => $settings->agent_charges_commission_buy_airtime,
+                'insurance' => $settings->agent_charges_commission_insurance,
+                'examCard' => $settings->agent_charges_commission_exam_card,
+                'buyTicket' => $settings->agent_charges_commission_buy_ticket,
+                'exchange' => $settings->agent_charges_commission_exchange,
+                'data' => $settings->agent_charges_commission_data,
+                'flight' => $settings->agent_charges_commission_flight,
+            ],
         ])->setStatusCode(
             Response::HTTP_OK,
             Response::$statusTexts[Response::HTTP_OK]
-        );//'customer_charges', 'agent_charges'
+        );
     }
 }
