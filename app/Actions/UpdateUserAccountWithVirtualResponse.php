@@ -7,7 +7,7 @@ use App\Notifications\AccountNumberCreatedNotification;
 
 class UpdateUserAccountWithVirtualResponse
 {
-    public static function execute(User $user, string $virtual_account_number)
+    public static function execute(User $user, string $virtual_account_number): void
     {
         $state = $user->update([
             'account_number' => $virtual_account_number

@@ -59,7 +59,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `model_has_permissions`;
 CREATE TABLE `model_has_permissions` (
@@ -131,6 +131,7 @@ CREATE TABLE `pos` (
   `device_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `device_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -170,7 +171,7 @@ CREATE TABLE `settings` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `settings_group_index` (`group`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions` (
@@ -310,7 +311,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (19, '2022_05_18_183607_create_settings_table', 6),
 (21, '2022_06_03_111454_create_pos_table', 6),
 (23, '2022_06_04_111936_create_permission_tables', 8),
-(24, '2022_05_18_184104_create_application_settings', 9);
+(25, '2022_05_18_184104_create_application_settings', 9),
+(26, '2022_06_10_045600_add_location_to_pos_table', 9);
 
 
 
@@ -321,17 +323,17 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 
 
 INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'create:role', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(1, 'create:role', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(2, 'view:role', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(2, 'view:role', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(3, 'update:role', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(3, 'update:role', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(4, 'delete:role', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(5, 'assign:role', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(6, 'revoke:role', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(7, 'create:permission', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(8, 'manage:administration', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(4, 'delete:role', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(5, 'assign:role', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(6, 'revoke:role', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(7, 'create:permission', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(8, 'manage:administration', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 
 
 
@@ -353,32 +355,52 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (8, 1);
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'Administrator', 'web', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(1, 'Administrator', 'web', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 
 
 INSERT INTO `settings` (`id`, `group`, `name`, `locked`, `payload`, `created_at`, `updated_at`) VALUES
-(1, 'application', 'pos', 0, 'true', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(1, 'application', 'pos', 0, 'true', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 INSERT INTO `settings` (`id`, `group`, `name`, `locked`, `payload`, `created_at`, `updated_at`) VALUES
-(2, 'application', 'data', 0, 'true', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(2, 'application', 'data', 0, 'true', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 INSERT INTO `settings` (`id`, `group`, `name`, `locked`, `payload`, `created_at`, `updated_at`) VALUES
-(3, 'application', 'flight', 0, 'false', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(3, 'application', 'flight', 0, 'false', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 INSERT INTO `settings` (`id`, `group`, `name`, `locked`, `payload`, `created_at`, `updated_at`) VALUES
-(4, 'application', 'transfer', 0, 'true', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(5, 'application', 'exam_card', 0, 'true', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(6, 'application', 'pay_bills', 0, 'true', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(7, 'application', 'exchange', 0, 'false', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(8, 'application', 'buy_ticket', 0, 'false', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(9, 'application', 'insurance', 0, 'false', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(10, 'application', 'buy_airtime', 0, 'true', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(11, 'application', 'bills_commission', 0, '\"\"', '2022-06-06 19:25:50', '2022-06-06 19:25:50'),
-(12, 'application', 'transfer_commission', 0, '\"\"', '2022-06-06 19:25:50', '2022-06-06 19:25:50');
+(4, 'application', 'transfer', 0, 'true', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(5, 'application', 'exam_card', 0, 'true', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(6, 'application', 'pay_bills', 0, 'true', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(7, 'application', 'exchange', 0, 'false', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(8, 'application', 'buy_ticket', 0, 'false', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(9, 'application', 'insurance', 0, 'false', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(10, 'application', 'buy_airtime', 0, 'true', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(11, 'application', 'bills_commission', 0, '\"\"', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(12, 'application', 'transfer_commission', 0, '\"\"', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(13, 'application', 'customer_charges_commission_pos', 0, '6', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(14, 'application', 'customer_charges_commission_transfer', 0, '2', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(15, 'application', 'customer_charges_commission_pay_bills', 0, '2', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(16, 'application', 'customer_charges_commission_buy_airtime', 0, '4', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(17, 'application', 'customer_charges_commission_insurance', 0, '0', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(18, 'application', 'customer_charges_commission_exam_card', 0, '1', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(19, 'application', 'customer_charges_commission_buy_ticket', 0, '10', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(20, 'application', 'customer_charges_commission_exchange', 0, '2', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(21, 'application', 'customer_charges_commission_data', 0, '3', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(22, 'application', 'customer_charges_commission_flight', 0, '3', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(23, 'application', 'agent_charges_commission_pos', 0, '6', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(24, 'application', 'agent_charges_commission_transfer', 0, '2', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(25, 'application', 'agent_charges_commission_pay_bills', 0, '2', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(26, 'application', 'agent_charges_commission_buy_airtime', 0, '4', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(27, 'application', 'agent_charges_commission_insurance', 0, '0', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(28, 'application', 'agent_charges_commission_exam_card', 0, '1', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(29, 'application', 'agent_charges_commission_buy_ticket', 0, '10', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(30, 'application', 'agent_charges_commission_exchange', 0, '2', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(31, 'application', 'agent_charges_commission_data', 0, '3', '2022-06-10 04:18:55', '2022-06-10 04:18:55'),
+(32, 'application', 'agent_charges_commission_flight', 0, '3', '2022-06-10 04:18:55', '2022-06-10 04:18:55');
 
 
 
 
 
 INSERT INTO `users` (`id`, `uuid`, `last_name`, `first_name`, `middle_name`, `phone`, `phone_country`, `device_id`, `date_of_birth`, `gender`, `pin`, `account_number`, `virtual_account_balance`, `email`, `phone_verified_at`, `email_verified_at`, `password`, `type`, `address_line_1`, `city`, `state`, `country`, `status`, `suspended_state`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '967ad85d-c81f-4c1d-ad06-cd79df66b620', 'Sunday', 'Adeyemii', NULL, '0812 234 6572', 'NG', NULL, NULL, NULL, NULL, NULL, NULL, 'adeyemii@mailinator.com', NULL, NULL, '$2y$10$Z52pI3iaqEQKCYJm7O7JHOMCW//YSlmbZlurypFCJj/cE7QxumTVW', 'user', NULL, NULL, NULL, NULL, 'App\\States\\User\\Inactive', 'App\\States\\User\\Activated', NULL, '2022-06-06 19:26:42', '2022-06-06 19:26:42', NULL);
+(1, '9681a0c6-3139-4275-b6c0-4cb56387eda0', 'Adeyemii', 'John', NULL, '0813 344 5566', 'NG', NULL, NULL, NULL, NULL, NULL, NULL, 'adeyemii@mailinator.com', NULL, NULL, '$2y$10$hYC1Fgucfz4fpQHVkrIBBupc.lA1Cixbk/lzQjs2n.R8sSHcI/dFu', 'user', NULL, NULL, NULL, NULL, 'App\\States\\User\\Inactive', 'App\\States\\User\\Activated', NULL, '2022-06-10 04:22:02', '2022-06-10 04:22:02', NULL);
 
 
 

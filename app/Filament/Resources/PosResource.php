@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Models\Pos;
+use Livewire\Component;
 use Filament\Resources\Form;
 use App\Enums\DeviceTypeEnum;
 use Filament\Resources\Table;
@@ -15,9 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Placeholder;
 use App\Filament\Resources\PosResource\Pages;
-use Filament\Forms\Components\BelongsToSelect;
 
 class PosResource extends Resource
 {
@@ -75,35 +74,25 @@ class PosResource extends Resource
     public static function getFormSchema(): array
     {
         return [
-            Grid::make(4)
+            Grid::make(3)
                 ->schema([
-                    BelongsToSelect::make('user_id')
-                        ->label(__('ASSIGN TO A USER:'))
-                        ->searchable()
-                        ->placeholder(__('Select user to assign to:'))
-                        ->relationship('user', 'email')
-                        ->required()
-                        ->columnSpan(2),
-                    Placeholder::make('updated_at')
-                        ->label('Last modified at')
-                        ->content(fn (?Pos $record): string => $record ? $record->updated_at->diffForHumans() : '-')
-                        ->columnSpan(2),
                     TextInput::make('device_id')
                         ->label(__('DEVICE ID'))
                         ->placeholder(__('DEVICE ID'))
-                        ->columnSpan(4),
+                        ->disabled(fn (Component $livewire): bool => $livewire instanceof Pages\EditPos)
+                        ->columnSpan(1),
                     Select::make('device_type')
                         ->label(__('DEVICE TYPE'))
                         ->options(DeviceTypeEnum::toArray())
                         ->required()
                         ->placeholder(__('Select device type'))
-                        ->columnSpan(2),
+                        ->columnSpan(1),
                     Select::make('status')
                         ->label(__('STATUS'))
                         ->options(DeviceStatusEnum::toArray())
                         ->required()
                         ->placeholder(__('Select status'))
-                        ->columnSpan(2),
+                        ->columnSpan(1),
                 ])
         ];
     }
@@ -114,6 +103,7 @@ class PosResource extends Resource
             TextColumn::make('user.email')
                 ->searchable()
                 ->sortable()
+                ->formatStateUsing(fn (?string $state): string => $state ?? __('NOT ASSIGNED'))
                 ->label(__('USER')),
             TextColumn::make('device_id')
                 ->label(__('DEVICE ID')),
@@ -133,6 +123,7 @@ class PosResource extends Resource
             'index' => Pages\ListPos::route('/'),
             'create' => Pages\CreatePos::route('/create'),
             'edit' => Pages\EditPos::route('/{record}/edit'),
+            'assign' => Pages\AssignPosToUser::route('/assign'),
         ];
     }
 }

@@ -20,5 +20,27 @@ class CreateApplicationSettings extends SettingsMigration
         $this->migrator->add('application.buy_airtime', true);
         $this->migrator->add('application.bills_commission', '');
         $this->migrator->add('application.transfer_commission', '');
+
+        $this->migrator->add('application.customer_charges_commission_pos', 6);
+        $this->migrator->add('application.customer_charges_commission_transfer', 2);
+        $this->migrator->add('application.customer_charges_commission_pay_bills', 2);
+        $this->migrator->add('application.customer_charges_commission_buy_airtime', 4);
+        $this->migrator->add('application.customer_charges_commission_insurance', 0);
+        $this->migrator->add('application.customer_charges_commission_exam_card', 1);
+        $this->migrator->add('application.customer_charges_commission_buy_ticket', 10);
+        $this->migrator->add('application.customer_charges_commission_exchange', 2);
+        $this->migrator->add('application.customer_charges_commission_data', 3);
+        $this->migrator->add('application.customer_charges_commission_flight', 3);
+
+        $this->migrator->add('application.agent_charges_commission_pos', 6);
+        $this->migrator->add('application.agent_charges_commission_transfer', 2);
+        $this->migrator->add('application.agent_charges_commission_pay_bills', 2);
+        $this->migrator->add('application.agent_charges_commission_buy_airtime', 4);
+        $this->migrator->add('application.agent_charges_commission_insurance', 0);
+        $this->migrator->add('application.agent_charges_commission_exam_card', 1);
+        $this->migrator->add('application.agent_charges_commission_buy_ticket', 10);
+        $this->migrator->add('application.agent_charges_commission_exchange', 2);
+        $this->migrator->add('application.agent_charges_commission_data', 3);
+        $this->migrator->add('application.agent_charges_commission_flight', 3);
     }
 }

@@ -232,4 +232,9 @@ class User extends Authenticatable implements Confirmable, FilamentUser, HasName
     {
         return $this->hasMany(Pos::class, 'user_id');
     }
+
+    public function scopeOnlyAgent($query)
+    {
+        return $query->where('type', 'agent');
+    }
 }
