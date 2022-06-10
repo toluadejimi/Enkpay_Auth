@@ -4,12 +4,9 @@ namespace App\DTOs;
 
 class WalletBalanceDto
 {
-    public string $amount;
-
-    public function __construct(string $amount)
-    {
-        $this->amount = $amount;
-    }
+    public function __construct(
+        public string $amount
+    ){}
 
     public static function fromRequest(array $attributes): static
     {

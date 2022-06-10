@@ -7,16 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 class CreditVirtualAccountDto
 {
-    public string $amount;
-    protected string $VirtualAccount;
-
     public function __construct(
-        string $VirtualAccount,
-        string $amount,
-    ){
-        $this->amount = $amount;
-        $this->VirtualAccount = $VirtualAccount;
-    }
+        public string $VirtualAccount,
+        public string $amount,
+    ){}
 
     public static function fromRequest($request): static
     {

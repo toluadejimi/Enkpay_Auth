@@ -8,17 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class POSDeviceAssignData
 {
-    public string $agent;
-    public string $device;
-    public string $location;
-
     public function __construct(
-        string $agent, string $device, string $location
-    ){
-           $this->agent = $agent;
-           $this->device = $device;
-           $this->location = $location;
-    }
+        public string $agent,
+        public string $device,
+        public string $location
+    ){}
 
     public static function fromArray(array $attributes): static
     {
